@@ -99,6 +99,7 @@ namespace qunar
             {
                 int i = 0, j = 0;
                 int cG = 0, cR = 0;
+                int score = 0;
                 int[,] matrix = new int[source.Width, source.Height];
                 int lt_w = int.MaxValue, lt_h = int.MaxValue;
                 int rb_w = int.MinValue, rb_h = int.MinValue;
@@ -128,7 +129,8 @@ namespace qunar
                         }
                     }
                 }
-                sw.WriteLine(string.Format("{0} {1} {2} {3}", (rb_h - lt_h + 1).ToString(), (rb_w - lt_w + 1).ToString(), cG.ToString(), cR.ToString()));
+                score = cG * Config.Green_Score + cR * Config.Red_Score;
+                sw.WriteLine(string.Format("{0} {1} {2} {3} {4}", (rb_h - lt_h + 1).ToString(), (rb_w - lt_w + 1).ToString(), cG.ToString(), cR.ToString(), score.ToString()));
 
                 for (j = lt_h; j <= rb_h; j++)
                 {
@@ -204,6 +206,7 @@ namespace qunar
             int i = 0, j = 0;
             int h = 0, w = 0;
             int g = 0, r = 0;
+            int score = 0;
             string tmp = null;
             StreamReader sr = new StreamReader(inpath);
 
@@ -213,15 +216,16 @@ namespace qunar
             w = Convert.ToByte(split[1]);
             g = Convert.ToByte(split[2]);
             r = Convert.ToByte(split[3]);
+            score = Convert.ToByte(split[4]);
 
-            Module module = new Module(character, h, w, g, r, null);
+            Module module = new Module(character, h, w, g, r, score, null);
 
             for (i = 0; i < h; i++)
             {
                 tmp = sr.ReadLine();
                 for (j = 0; j < w; j++)
                 {
-                    module.matrix[i, j] = Convert.ToByte(tmp[j] - '0');
+                    module.matrix[j, i] = Convert.ToByte(tmp[j] - '0');
                 }
             }
 

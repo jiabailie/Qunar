@@ -38,6 +38,28 @@ namespace qunar
         private const int POSITION_THRESHOLD = 1;
 
         /// <summary>
+        /// The largest distance of backward operation.
+        /// </summary>
+        private const int BACKWARD_DISTANCE = 5;
+
+        /// <summary>
+        /// How many score one green dot has.
+        /// </summary>
+        private const int GREEN_SCORE = 3;
+
+        /// <summary>
+        /// How many score one red dot has.
+        /// </summary>
+        private const int RED_SCORE = 7;
+
+        /// <summary>
+        /// If and only if some image get score more than (MATCH_LEAST_SCORE_PERCENT * (total score of a template)),
+        /// we consider they are match.
+        /// total score of a template = green * 3 + red * 7
+        /// </summary>
+        private const double MATCH_LEAST_SCORE_PERCENT = 0.9;
+
+        /// <summary>
         /// Sample files path.
         /// </summary>
         private const string SAMPLE_PATH = "../../../../qunar-file/samples/";
@@ -100,6 +122,26 @@ namespace qunar
         public static int Line_Length_Threshold
         {
             get { return LINE_LENGTH_THRESHOLD; }
+        }
+
+        public static int Backward_Distance
+        {
+            get { return BACKWARD_DISTANCE; }
+        }
+
+        public static int Green_Score
+        {
+            get { return GREEN_SCORE; }
+        }
+
+        public static int Red_Score
+        {
+            get { return RED_SCORE; }
+        }
+
+        public static double Match_Least_Score_Percent
+        {
+            get { return MATCH_LEAST_SCORE_PERCENT; }
         }
 
         public static string Sample_Path

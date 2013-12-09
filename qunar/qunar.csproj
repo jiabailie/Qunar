@@ -55,6 +55,7 @@
     <Compile Include="Entity\iPoint.cs" />
     <Compile Include="Entity\oneWidthLine.cs" />
     <Compile Include="Operations\Operations.cs" />
+    <Compile Include="Operations\Recognition.cs" />
     <Compile Include="Operations\SetOperations.cs" />
     <Compile Include="Operations\Template.cs" />
     <Compile Include="Program.cs" />

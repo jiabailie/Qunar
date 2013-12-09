@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define USING_LINE_CENTER
+#undef  USING_LINE_CENTER
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -447,24 +449,28 @@ namespace qunar
                     }
                 }
 
-                // The new consecutive black segment should has common consistent subset.
-                //for (i = 0; i < lhs.Count; i++)
-                //{
-                //    if (SetOperations.If_Two_Sets_Intersection(lhs[i] - Config.Position_Threshold, lhe[i] + Config.Position_Threshold, las_hs, las_he))
-                //    {
-                //        hs = lhs[i];
-                //        he = lhe[i];
-                //        plen = las_he - las_hs + 1;
-                //        nlen = he - hs + 1;
+#if USING_LINE_CENTER
+                int plen = 0, nlen = 0;
 
-                //        if (Math.Abs(nlen - plen) >= Config.Vertical_Threshold || nlen >= Config.Line_Length_Threshold)
-                //        {
-                //            hs = center - 1;
-                //            he = center + 1;
-                //        }
-                //        break;
-                //    }
-                //}
+                //The new consecutive black segment should has common consistent subset.
+                for (i = 0; i < lhs.Count; i++)
+                {
+                    if (SetOperations.If_Two_Sets_Intersection(lhs[i] - Config.Position_Threshold, lhe[i] + Config.Position_Threshold, las_hs, las_he))
+                    {
+                        hs = lhs[i];
+                        he = lhe[i];
+                        plen = las_he - las_hs + 1;
+                        nlen = he - hs + 1;
+
+                        if (Math.Abs(nlen - plen) >= Config.Vertical_Threshold || nlen >= Config.Line_Length_Threshold)
+                        {
+                            hs = center - 1;
+                            he = center + 1;
+                        }
+                        break;
+                    }
+                }
+#endif
             }
             catch (Exception e)
             {

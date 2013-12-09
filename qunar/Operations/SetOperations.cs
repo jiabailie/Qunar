@@ -39,12 +39,12 @@ namespace qunar
         /// <summary>
         /// Get two sets' intersection
         /// </summary>
-        /// <param name="s1"></param>
-        /// <param name="e1"></param>
-        /// <param name="s2"></param>
-        /// <param name="e2"></param>
-        /// <param name="rs"></param>
-        /// <param name="re"></param>
+        /// <param name="s1">line1 start position</param>
+        /// <param name="e1">line1 end position</param>
+        /// <param name="s2">line2 start position</param>
+        /// <param name="e2">line2 end position</param>
+        /// <param name="rs">return set start position</param>
+        /// <param name="re">return set end position</param>
         public static void Get_Sets_Intersection(int s1, int e1, int s2, int e2, ref int rs, ref int re)
         {
             rs = -1;
