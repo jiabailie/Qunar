@@ -109,7 +109,7 @@ namespace qunar
         /// <param name="height"></param>
         /// <param name="matrix"></param>
         /// <returns></returns>
-        public static byte[,] Remove_Matrix_Blank_Regions(ref int nw, ref int nh,int width, int height, byte[,] matrix)
+        public static byte[,] Remove_Matrix_Blank_Regions(ref int nw, ref int nh, int width, int height, byte[,] matrix)
         {
             int i = 0, j = 0;
             int lt_w = int.MaxValue, lt_h = int.MaxValue;

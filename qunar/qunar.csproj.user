@@ -4,6 +4,7 @@
     <ProjectView>ProjectFiles</ProjectView>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <StartArguments>../../waitting/0(0).jpg</StartArguments>
+    <StartArguments>
+    </StartArguments>
   </PropertyGroup>
 </Project>

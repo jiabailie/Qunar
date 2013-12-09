@@ -67,13 +67,16 @@ namespace qunar
 
         public void Add(bool _directionType, int _sPos, int _dStart, int _dEnd)
         {
-            OneLineSet.Add(new oneWidthLine()
+            if (_dStart > -1 && _dEnd > -1)
             {
-                directionType = _directionType,
-                sPos = _sPos,
-                dStart = _dStart,
-                dEnd = _dEnd
-            });
+                OneLineSet.Add(new oneWidthLine()
+                {
+                    directionType = _directionType,
+                    sPos = _sPos,
+                    dStart = _dStart,
+                    dEnd = _dEnd
+                });
+            }
         }
     }
 }

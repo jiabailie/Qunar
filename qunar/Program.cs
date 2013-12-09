@@ -30,6 +30,12 @@ namespace qunar
 
                 source = Operations.ConvertJpg2Bmp(args[0]);
 
+                w = source.Width;
+                h = source.Height;
+
+                // Do uniformization operation
+                Operations.UniformizationBmp(source);
+
                 // Remove black edges
                 Operations.generate_White_Edges(source);
 
@@ -37,12 +43,15 @@ namespace qunar
                 iline1 = QunarFeatureOperations.Find_Long_Connected_Lines(source.Width - 1, 0, -1, source);
                 iline2 = QunarFeatureOperations.Find_Long_Connected_Lines(0, source.Width - 1, 1, source);
 
+                // Transform the processed input image into 0/1 matrix.
                 matrix = SetOperations.Transform_Image_To_Matrix(source);
 
+                // Remove the redundant white regions.
                 matrix = SetOperations.Remove_Matrix_Blank_Regions(ref w, ref h, source.Width, source.Height, matrix);
 
 #if WATCH_PREPROCESS_RESULT
-                IO.write_Matrix_To_Txt<byte>(w, h, matrix, Config.Test_Processed_Path + "/test.txt");
+                // For debug, output the matrix into a text file.
+                IO.write_Matrix_To_Txt<byte>(w, h, matrix, Config.Test_Processed_Path + "/test" + DateTime.Now.Ticks.ToString() + ".txt");
 #endif
             }
             else

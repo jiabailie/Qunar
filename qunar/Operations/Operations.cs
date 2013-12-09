@@ -387,82 +387,89 @@ namespace qunar
         /// <param name="source"></param>
         public static void find_Vertical_Black_Line_Segment(int vertical, ref int hs, ref int he, int trend, int las_hs, int las_he, Bitmap source)
         {
-            bool sfind = false;
-            int i = 0;
-            int tmpDiff = 0, minDiff = int.MaxValue;
-            int center = las_hs + (las_he - las_hs) / 2;
-            List<int> lhs = new List<int>();
-            List<int> lhe = new List<int>();
-
-            for (i = 0; i < source.Height; i++)
+            try
             {
-                Color tmp = source.GetPixel(vertical, i);
-                if (tmp.R + tmp.G + tmp.B == 0)
+                bool sfind = false;
+                int i = 0;
+                int tmpDiff = 0, minDiff = int.MaxValue;
+                int center = las_hs + (las_he - las_hs) / 2;
+                List<int> lhs = new List<int>();
+                List<int> lhe = new List<int>();
+
+                for (i = 0; i < source.Height; i++)
                 {
-                    if (!sfind)
+                    Color tmp = source.GetPixel(vertical, i);
+                    if (tmp.R + tmp.G + tmp.B == 0)
                     {
-                        sfind = true;
-                        lhs.Add(i);
+                        if (!sfind)
+                        {
+                            sfind = true;
+                            lhs.Add(i);
+                        }
+                    }
+                    else
+                    {
+                        if (sfind)
+                        {
+                            sfind = false;
+                            lhe.Add(i - 1);
+                        }
                     }
                 }
-                else
+
+                // If this vertical line is a pure white line
+                if (lhs.Count == 0)
                 {
-                    if (sfind)
+                    return;
+                }
+
+                // if this vertical line only has one consecutive black segment
+                if (lhs.Count == 1)
+                {
+                    hs = lhs[0];
+                    he = lhe[0];
+                }
+
+                for (i = 0; i < lhs.Count; i++)
+                {
+                    tmpDiff = Math.Abs(lhs[i] + lhe[i] - las_hs - las_he);
+                    if (tmpDiff < minDiff)
                     {
-                        sfind = false;
-                        lhe.Add(i - 1);
+                        minDiff = tmpDiff;
+                        hs = lhs[i];
+                        he = lhe[i];
+
+                        if (lhe[i] - lhs[i] >= 5)
+                        {
+                            hs = las_hs;
+                            he = Math.Min(las_hs + 3, source.Height - 1);
+                        }
                     }
                 }
-            }
 
-            // If this vertical line is a pure white line
-            if (lhs.Count == 0)
+                // The new consecutive black segment should has common consistent subset.
+                //for (i = 0; i < lhs.Count; i++)
+                //{
+                //    if (SetOperations.If_Two_Sets_Intersection(lhs[i] - Config.Position_Threshold, lhe[i] + Config.Position_Threshold, las_hs, las_he))
+                //    {
+                //        hs = lhs[i];
+                //        he = lhe[i];
+                //        plen = las_he - las_hs + 1;
+                //        nlen = he - hs + 1;
+
+                //        if (Math.Abs(nlen - plen) >= Config.Vertical_Threshold || nlen >= Config.Line_Length_Threshold)
+                //        {
+                //            hs = center - 1;
+                //            he = center + 1;
+                //        }
+                //        break;
+                //    }
+                //}
+            }
+            catch (Exception e)
             {
-                return;
+                throw new Exception(e.Message);
             }
-
-            // if this vertical line only has one consecutive black segment
-            if (lhs.Count == 1)
-            {
-                hs = lhs[0];
-                he = lhe[0];
-            }
-
-            for (i = 0; i < lhs.Count; i++)
-            {
-                tmpDiff = Math.Abs(lhs[i] + lhe[i] - las_hs - las_he);
-                if (tmpDiff < minDiff)
-                {
-                    minDiff = tmpDiff;
-                    hs = lhs[i];
-                    he = lhe[i];
-
-                    if (lhe[i] - lhs[i] >= 5)
-                    {
-                        hs = las_hs;
-                        he = Math.Min(las_hs + 3, source.Height - 1);
-                    }
-                }
-            }
-
-            // The new consecutive black segment should has common consistent subset.
-            //for (i = 0; i < lhs.Count; i++)
-            //{
-            //    if (SetOperations.If_Two_Sets_Intersection(lhs[i] - Config.Position_Threshold, lhe[i] + Config.Position_Threshold, las_hs, las_he))
-            //    {
-            //        hs = lhs[i];
-            //        he = lhe[i];
-            //        plen = las_he - las_hs + 1;
-            //        nlen = he - hs + 1;
-
-            //        if (Math.Abs(nlen - plen) >= Config.Vertical_Threshold || nlen >= Config.Line_Length_Threshold)
-            //        {
-            //            hs = center - 1;
-            //            he = center + 1;
-            //        }
-            //        break;
-            //    }
-            //}
         }
     }
 }
