@@ -1,0 +1,1 @@
+qunar.exe ../../waitting/0(0).jpg
