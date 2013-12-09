@@ -16,6 +16,7 @@ namespace qunar
         static void Main(string[] args)
         {
             int w = 0, h = 0;
+            string ret = "";
             Bitmap source = null;
             iLine iline1 = null;
             iLine iline2 = null;
@@ -53,6 +54,10 @@ namespace qunar
                 // For debug, output the matrix into a text file.
                 IO.write_Matrix_To_Txt<byte>(w, h, matrix, Config.Test_Processed_Path + "/test" + DateTime.Now.Ticks.ToString() + ".txt");
 #endif
+                Console.WriteLine("Do recognition:");
+                ret = Recognition<byte>.Do_Image_Recognition(w, h, matrix, modules);
+                Console.WriteLine(ret);
+                Console.Read();
             }
             else
             {

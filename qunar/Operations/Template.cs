@@ -191,7 +191,7 @@ namespace qunar
             }
             catch (Exception ex)
             {
-                throw new Exception(ex.Message);
+                throw new Exception("write_Template_To_Character:" + ex.Message);
             }
         }
 
@@ -203,33 +203,40 @@ namespace qunar
         /// <returns></returns>
         public static Module read_Template_From_Text_To_Memory(char character, string inpath)
         {
-            int i = 0, j = 0;
-            int h = 0, w = 0;
-            int g = 0, r = 0;
-            int score = 0;
-            string tmp = null;
-            StreamReader sr = new StreamReader(inpath);
-
-            string[] split = sr.ReadLine().Trim().Split(' ');
-
-            h = Convert.ToByte(split[0]);
-            w = Convert.ToByte(split[1]);
-            g = Convert.ToByte(split[2]);
-            r = Convert.ToByte(split[3]);
-            score = Convert.ToByte(split[4]);
-
-            Module module = new Module(character, h, w, g, r, score, null);
-
-            for (i = 0; i < h; i++)
+            try
             {
-                tmp = sr.ReadLine();
-                for (j = 0; j < w; j++)
-                {
-                    module.matrix[j, i] = Convert.ToByte(tmp[j] - '0');
-                }
-            }
+                int i = 0, j = 0;
+                int h = 0, w = 0;
+                int g = 0, r = 0;
+                int score = 0;
+                string tmp = null;
+                StreamReader sr = new StreamReader(inpath);
 
-            return module;
+                string[] split = sr.ReadLine().Trim().Split(' ');
+
+                h = Convert.ToByte(split[0]);
+                w = Convert.ToByte(split[1]);
+                g = Convert.ToByte(split[2]);
+                r = Convert.ToByte(split[3]);
+                score = Convert.ToInt32(split[4]);
+
+                Module module = new Module(character, h, w, g, r, score, null);
+
+                for (i = 0; i < h; i++)
+                {
+                    tmp = sr.ReadLine();
+                    for (j = 0; j < w; j++)
+                    {
+                        module.matrix[j, i] = Convert.ToByte(tmp[j] - '0');
+                    }
+                }
+
+                return module;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("read_Template_From_Text_To_Memory:" + ex.Message);
+            }
         }
     }
 }
