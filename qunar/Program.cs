@@ -57,7 +57,7 @@ namespace qunar
                 Console.WriteLine("Do recognition:");
                 ret = Recognition<byte>.Do_Image_Recognition(w, h, matrix, modules);
                 Console.WriteLine(ret);
-                Console.Read();
+                //Console.Read();
             }
             else
             {

@@ -69,7 +69,7 @@ namespace qunar
 
             try
             {
-                while (maxCharacter == '\0' && verticalPosition != width)
+                while (maxCharacter == '\0' && verticalPosition < width)
                 {
                     for (i = 0; i < height; i++)
                     {
@@ -92,6 +92,9 @@ namespace qunar
 
                     if (maxCharacter != '\0')
                     {
+#if WATCH_PREPROCESS_RESULT
+                        Console.WriteLine("{0} {1}", verticalPosition, maxWidth);
+#endif
                         verticalPosition = verticalPosition + maxWidth - 1;
                         break;
                     }
