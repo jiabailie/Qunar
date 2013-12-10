@@ -1,5 +1,5 @@
 ﻿#define WATCH_PREPROCESS_RESULT
-//#undef  WATCH_PREPROCESS_RESULT
+#undef  WATCH_PREPROCESS_RESULT
 using System;
 using System.Collections.Generic;
 using System.Linq;

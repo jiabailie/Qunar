@@ -40,7 +40,7 @@ namespace qunar
         /// <summary>
         /// The largest distance of backward operation.
         /// </summary>
-        private const int BACKWARD_DISTANCE = -5;
+        private const int BACKWARD_DISTANCE = -2;
 
         /// <summary>
         /// How many score one green dot has.
@@ -57,7 +57,7 @@ namespace qunar
         /// we consider they are match.
         /// total score of a template = green * 3 + red * 7
         /// </summary>
-        private const double MATCH_LEAST_SCORE_PERCENT = 0.9;
+        private const double MATCH_LEAST_SCORE_PERCENT = 0.9999;
 
         /// <summary>
         /// Sample files path.
