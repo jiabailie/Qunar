@@ -61,7 +61,7 @@ namespace qunar
         {
             int i = 0, j = 0;
             int tmpScore = 0;
-            int maxWidth=0;
+            int maxWidth = 0;
             double maxPercent = double.MinValue;
             double tmpPercent = 0.0;
             char maxCharacter = '\0';
@@ -75,7 +75,7 @@ namespace qunar
                     {
                         for (j = 0; j < modules.Count; j++)
                         {
-                            if (i + modules[j].height >= height || verticalPosition + modules[j].width >= width)
+                            if (i + modules[j].height - 1 >= height || verticalPosition + modules[j].width - 1 >= width)
                             {
                                 continue;
                             }
@@ -83,13 +83,13 @@ namespace qunar
                             tmpPercent = tmpScore * 1.0 / modules[j].score;
                             if (tmpPercent > maxPercent)
                             {
-                                maxWidth=modules[j].width;
+                                maxWidth = modules[j].width;
                                 maxPercent = tmpPercent;
                                 maxCharacter = modules[j].character;
                             }
                         }
                     }
-                    
+
                     if (maxCharacter != '\0')
                     {
                         verticalPosition = verticalPosition + maxWidth - 1;

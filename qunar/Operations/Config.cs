@@ -40,7 +40,7 @@ namespace qunar
         /// <summary>
         /// The largest distance of backward operation.
         /// </summary>
-        private const int BACKWARD_DISTANCE = 5;
+        private const int BACKWARD_DISTANCE = 1;
 
         /// <summary>
         /// How many score one green dot has.
