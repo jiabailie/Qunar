@@ -50,12 +50,12 @@ namespace qunar
         /// <summary>
         /// How many green points you would to draw in this template.
         /// </summary>
-        private const int GREEN_POINT_AMOUNT = 60;
+        private const int GREEN_POINT_AMOUNT = 77;
 
         /// <summary>
         /// How many red points you would to draw in this template.
         /// </summary>
-        private const int RED_POINT_AMOUNT = 30;
+        private const int RED_POINT_AMOUNT = 37;
 
         /// <summary>
         /// How many score one green dot has.
