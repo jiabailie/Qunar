@@ -34,8 +34,9 @@ namespace qunar
                 sb.Append("1. Write bmp into text files using threshold.\n");
                 sb.Append("2. Write bmp into bmp files using threshold.\n");
                 sb.Append("3. Recognize the long black lines and write them into bmp files.\n");
-                sb.Append("4. Wirte template files into text files.\n");
-                sb.Append("5. Read template text files into memory.\n");
+                sb.Append("4. Generate new templates using raw templates.\n"); 
+                sb.Append("5. Wirte template files into text files.\n");
+                sb.Append("6. Read template text files into memory.\n");
                 sb.Append("9. Exit.\n");
 
                 Console.Write(sb.ToString());
@@ -54,9 +55,12 @@ namespace qunar
                         Branch.write_Long_Black_Lines_Into_Files(Config.Sample_Path, Config.Long_Black_Line_Path, FileType.jpg);
                         break;
                     case 4:
-                        Template.write_Template_Into_Text_Files(Config.Template_Path, Config.Processed_Template_Path, FileType.bmp);
+                        Template.generate_Template_From_Img(Config.Raw_template_Path, Config.Template_Path, FileType.bmp);
                         break;
                     case 5:
+                        Template.write_Template_Into_Text_Files(Config.Template_Path, Config.Processed_Template_Path, FileType.bmp);
+                        break;
+                    case 6:
                         modules = Template.read_Templates_To_Memory(Config.Processed_Template_Path, FileType.txt);
                         break;
                     case 9:

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Drawing;
+using System.Drawing.Imaging;
 
 namespace qunar
 {
@@ -36,28 +37,24 @@ namespace qunar
                 Bitmap source = null;
                 foreach (char c in cset)
                 {
-                    try
+                    ninpath = inpath + c + "/";
+                    for (i = 0; i < (1 << 10); i++)
                     {
-                        ninpath = inpath + c + "/";
-                        for (i = 0; i < (1 << 10); i++)
-                        {
-                            filepath = string.Format("{0}0({1}).{2}", ninpath, i, fileType);
+                        filepath = string.Format("{0}0({1}).{2}", ninpath, i, fileType);
 
-                            if (!File.Exists(filepath)) { break; }
+                        if (!File.Exists(filepath)) { break; }
 
-                            source = new Bitmap(filepath);
+                        source = new Bitmap(filepath);
 
 #if GENERATE_TEMPLATE
-                            noutpath = string.Format("{0}/{1}({2}).txt", outpath, c, i);
-                            generate_Template_Into_Text(source, noutpath);
+                        noutpath = string.Format("{0}/{1}({2}).txt", outpath, c, i);
+                        generate_Template_Into_Text(source, noutpath);
 #else
                             noutpath = string.Format("{0}/t_{1}_{2}.txt", outpath, c, i);
                             write_Template_To_Character(source, noutpath);
 #endif
 
-                        }
                     }
-                    catch (Exception) { }
                 }
             }
             catch (Exception) { }
@@ -98,7 +95,6 @@ namespace qunar
             try
             {
                 int i = 0, j = 0;
-                int cG = 0, cR = 0;
                 int score = 0;
                 int[,] matrix = new int[source.Width, source.Height];
                 int lt_w = int.MaxValue, lt_h = int.MaxValue;
@@ -115,12 +111,10 @@ namespace qunar
                             if (color.G == 255)
                             {
                                 matrix[i, j] = 1;
-                                cG++;
                             }
                             else if (color.R == 255)
                             {
                                 matrix[i, j] = 2;
-                                cR++;
                             }
                             if (i < lt_w) { lt_w = i; }
                             if (i > rb_w) { rb_w = i; }
@@ -129,8 +123,8 @@ namespace qunar
                         }
                     }
                 }
-                score = cG * Config.Green_Score + cR * Config.Red_Score;
-                sw.WriteLine(string.Format("{0} {1} {2} {3} {4}", (rb_h - lt_h + 1).ToString(), (rb_w - lt_w + 1).ToString(), cG.ToString(), cR.ToString(), score.ToString()));
+                score = Config.Green_Point_Amount * Config.Green_Score + Config.Red_Point_Amount * Config.Red_Score;
+                sw.WriteLine(string.Format("{0} {1} {2} {3} {4}", (rb_h - lt_h + 1).ToString(), (rb_w - lt_w + 1).ToString(), Config.Green_Point_Amount, Config.Red_Point_Amount, score.ToString()));
 
                 for (j = lt_h; j <= rb_h; j++)
                 {
@@ -236,6 +230,81 @@ namespace qunar
             catch (Exception ex)
             {
                 throw new Exception("read_Template_From_Text_To_Memory:" + ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Using segmented templates to draw fixed number of red and green points.
+        /// </summary>
+        /// <param name="inpath"></param>
+        /// <param name="outpath"></param>
+        /// <param name="fileType"></param>
+        public static void generate_Template_From_Img(string inpath, string outpath, FileType fileType)
+        {
+            try
+            {
+                int i = 0;
+                string ninpath = "";
+                string noutpath = "";
+                Bitmap source = null;
+                foreach (char c in cset)
+                {
+                    for (i = 0; i < (1 << 10); i++)
+                    {
+                        ninpath = string.Format("{0}{1}/0({2}).{3}", inpath, c, i, fileType);
+                        noutpath = string.Format("{0}{1}/0({2}).{3}", outpath, c, i, fileType);
+
+                        if (!File.Exists(ninpath)) { break; }
+
+                        source = new Bitmap(ninpath);
+                        draw_Points_In_Template(source);
+                        source.Save(noutpath, ImageFormat.Bmp);
+                    }
+                }
+            }
+            catch (Exception) { }
+        }
+
+        /// <summary>
+        /// Draw green and red points in the template.
+        /// </summary>
+        /// <param name="source"></param>
+        public static void draw_Points_In_Template(Bitmap source)
+        {
+            int rw = 0, rh = 0;
+            int w = source.Width;
+            int h = source.Height;
+            int green = Config.Green_Point_Amount;
+            int red = Config.Red_Point_Amount;
+            Color tmp = new Color();
+            Color cGreen = Color.FromArgb(0, 255, 0);
+            Color cRed = Color.FromArgb(255, 0, 0);
+            Random random = new Random();
+
+            while (green > 0 || red > 0)
+            {
+                rw = random.Next(0, w - 1);
+                rh = random.Next(0, h - 1);
+
+                tmp = source.GetPixel(rw, rh);
+                if (tmp.R + tmp.G + tmp.B == 0)
+                {
+                    // black
+                    if (green > 0)
+                    {
+                        green--;
+                        source.SetPixel(rw, rh, cGreen);
+                    }
+                }
+                else
+                {
+                    // white
+                    if (red > 0)
+                    {
+                        red--;
+                        source.SetPixel(rw, rh, cRed);
+                    }
+                }
             }
         }
     }

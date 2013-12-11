@@ -43,6 +43,16 @@ namespace qunar
         private const int BACKWARD_DISTANCE = -2;
 
         /// <summary>
+        /// How many green points you would to draw in this template.
+        /// </summary>
+        private const int GREEN_POINT_AMOUNT = 55;
+
+        /// <summary>
+        /// How many red points you would to draw in this template.
+        /// </summary>
+        private const int RED_POINT_AMOUNT = 25;
+
+        /// <summary>
         /// How many score one green dot has.
         /// </summary>
         private const int GREEN_SCORE = 3;
@@ -95,6 +105,11 @@ namespace qunar
         private const string TEST_PROCESSED_PATH = "../../../../qunar-file/test/";
 
         /// <summary>
+        /// Where saves the raw templates.
+        /// </summary>
+        private const string RAW_TEMPLATE_PATH = "../../../../qunar-file/rtemplate/";
+
+        /// <summary>
         /// The largest length of verticel line segment.
         /// </summary>
         private const int LINE_LENGTH_THRESHOLD = 5;
@@ -127,6 +142,16 @@ namespace qunar
         public static int Backward_Distance
         {
             get { return BACKWARD_DISTANCE; }
+        }
+
+        public static int Green_Point_Amount
+        {
+            get { return GREEN_POINT_AMOUNT; }
+        }
+
+        public static int Red_Point_Amount
+        {
+            get { return RED_POINT_AMOUNT; }
         }
 
         public static int Green_Score
@@ -177,6 +202,11 @@ namespace qunar
         public static string Test_Processed_Path
         {
             get { return TEST_PROCESSED_PATH; }
+        }
+
+        public static string Raw_template_Path
+        {
+            get { return RAW_TEMPLATE_PATH; }
         }
     }
 }
