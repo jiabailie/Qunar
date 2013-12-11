@@ -71,7 +71,7 @@ namespace qunar
         /// When drawing a red or green point
         /// The neighbour should satisfy the minimus amount.
         /// </summary>
-        private const int DRAW_NEIGHBOUR_CONDITION = 4;
+        private const int DRAW_NEIGHBOUR_CONDITION = 6;
 
         /// <summary>
         /// If and only if some image get score more than (MATCH_LEAST_SCORE_PERCENT * (total score of a template)),
