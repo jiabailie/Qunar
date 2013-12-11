@@ -90,6 +90,10 @@ namespace qunar
                         }
                     }
 
+                    if (maxPercent - Config.Match_Least_Score_Percent < 1e-9)
+                    {
+                        maxCharacter = '\0';
+                    }
                     if (maxCharacter != '\0')
                     {
 #if WATCH_PREPROCESS_RESULT

@@ -1,8 +1,8 @@
-﻿#define WATCH_PREPROCESS_RESULT
-#undef  WATCH_PREPROCESS_RESULT
+﻿#define Watch_Pre_Process_Result
 #define Remove_Thin_Vertical_Line
 #define Find_Long_Thin_Lines
 #define Remove_Suspending_Points
+#undef  Watch_Pre_Process_Result
 #undef  Remove_Thin_Vertical_Line
 #undef  Find_Long_Thin_Lines
 #undef  Remove_Suspending_Points
@@ -26,6 +26,9 @@ namespace qunar
         public static void recognition_Branch(string[] args)
         {
             int w = 0, h = 0;
+#if Watch_Pre_Process_Result
+            int s = 0, e = 0;
+#endif
             string ret = "";
             Bitmap source = null;
             iLine iline1 = null;
@@ -36,7 +39,10 @@ namespace qunar
             modules = Template.read_Templates_To_Memory(Config.Processed_Template_Path, FileType.txt);
 
             if (!File.Exists(args[0])) { return; }
-
+#if Watch_Pre_Process_Result
+            s = args[0].IndexOf('(');
+            e = args[0].IndexOf(')');
+#endif
             source = Operations.ConvertJpg2Bmp(args[0]);
 
             w = source.Width;
@@ -58,12 +64,16 @@ namespace qunar
             // Remove the redundant white regions.
             matrix = SetOperations.Remove_Matrix_Blank_Regions(ref w, ref h, source.Width, source.Height, matrix);
 
-#if WATCH_PREPROCESS_RESULT
+#if Watch_Pre_Process_Result
                 // For debug, output the matrix into a text file.
                 IO.write_Matrix_To_Txt<byte>(w, h, matrix, Config.Test_Processed_Path + "/test" + DateTime.Now.Ticks.ToString() + ".txt");
 #endif
             ret = Recognition<byte>.Do_Image_Recognition(w, h, matrix, modules);
-            Console.WriteLine(ret);
+#if Watch_Pre_Process_Result
+            IO.write_Result_To_Text_File(string.Format("{0} {1}", args[0].Substring(s + 1, e - s - 1), ret), Config.Result_Save_Path);
+#else
+            IO.write_Result_To_Text_File(ret, Config.Result_Save_Path);
+#endif
         }
 
         /// <summary>
@@ -167,6 +177,11 @@ namespace qunar
         /// <param name="filetype"></param>
         public static void write_Bmp_To_Bmp_Using_Threshold(string filepath, string savepath, FileType filetype)
         {
+            int i = 0;
+            string inpath = "";
+            string outpath = "";
+            Bitmap bitmap = null;
+
             try
             {
                 if (filetype != FileType.bmp && filetype != FileType.jpg)
@@ -174,12 +189,9 @@ namespace qunar
                     throw new Exception("The file type is not image.");
                 }
 
-                string inpath = "";
-                string outpath = "";
-                Bitmap bitmap = null;
                 try
                 {
-                    for (int i = 0; i < (1 << 10); i++)
+                    for (i = 0; i < (1 << 10); i++)
                     {
                         inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
                         outpath = savepath + "0(" + i.ToString() + ")." + FileType.bmp.ToString();
@@ -217,6 +229,11 @@ namespace qunar
 
         public static void write_Bmp_To_Txt_Using_Threshold(string filepath, string savepath, FileType filetype)
         {
+            int i = 0;
+            string inpath = "";
+            string outpath = "";
+            Bitmap bitmap = null;
+
             try
             {
                 if (filetype != FileType.bmp && filetype != FileType.jpg)
@@ -224,13 +241,9 @@ namespace qunar
                     throw new Exception("The file type is not image.");
                 }
 
-                string inpath = "";
-                string outpath = "";
-                Bitmap bitmap = null;
-
                 try
                 {
-                    for (int i = 0; i < (1 << 10); i++)
+                    for (i = 0; i < (1 << 10); i++)
                     {
                         inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
                         outpath = savepath + "0(" + i.ToString() + ")." + FileType.txt.ToString();
@@ -261,6 +274,11 @@ namespace qunar
 
         public static void write_Long_Black_Lines_Into_Files(string filepath, string savepath, FileType filetype)
         {
+            int i = 0;
+            string inpath = "";
+            string outpath = "";
+            Bitmap bitmap = null;
+
             try
             {
                 if (filetype != FileType.bmp && filetype != FileType.jpg)
@@ -268,12 +286,9 @@ namespace qunar
                     throw new Exception("The file type is not image.");
                 }
 
-                string inpath = "";
-                string outpath = "";
-                Bitmap bitmap = null;
                 try
                 {
-                    for (int i = 0; i < (1 << 10); i++)
+                    for (i = 0; i < (1 << 10); i++)
                     {
                         inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
                         outpath = savepath + "0(" + i.ToString() + ")." + FileType.bmp.ToString();

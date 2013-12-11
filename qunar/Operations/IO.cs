@@ -204,5 +204,26 @@ namespace qunar
                 throw new Exception(e.Message);
             }
         }
+
+        /// <summary>
+        /// Save the processed result into text file.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="outpath"></param>
+        public static void write_Result_To_Text_File(string result, string outpath)
+        {
+            StreamWriter sw = new StreamWriter(outpath, true);
+
+            try
+            {
+                sw.WriteLine(result);
+                sw.Flush();
+                sw.Close();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

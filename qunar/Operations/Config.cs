@@ -73,7 +73,7 @@ namespace qunar
         /// we consider they are match.
         /// total score of a template = green * 3 + red * 7
         /// </summary>
-        private const double MATCH_LEAST_SCORE_PERCENT = 0.9999;
+        private const double MATCH_LEAST_SCORE_PERCENT = 0.7;
 
         /// <summary>
         /// Sample files path.
@@ -114,6 +114,11 @@ namespace qunar
         /// Where saves the raw templates.
         /// </summary>
         private const string RAW_TEMPLATE_PATH = "../../../../qunar-file/rtemplate/";
+
+        /// <summary>
+        /// A text file which saves the results.
+        /// </summary>
+        private const string RESULT_SAVE_PATH = "../../../../qunar-file/result/result.txt";
 
         /// <summary>
         /// The largest length of verticel line segment.
@@ -218,6 +223,11 @@ namespace qunar
         public static string Raw_template_Path
         {
             get { return RAW_TEMPLATE_PATH; }
+        }
+
+        public static string Result_Save_Path
+        {
+            get { return RESULT_SAVE_PATH; }
         }
     }
 }
