@@ -16,10 +16,10 @@ namespace qunar
     public class Template
     {
         private static char[] cset = new char[] { 
-                    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
-                    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 
-                    'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 
-                    'u', 'v', 'w', 'x', 'y', 'z' };
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', 
+            '9', 'a', 'b', 'd', 'f', 'g', 'h', 'i', 'j', 
+            'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 
+            't', 'u', 'v', 'w', 'x', 'y', 'z', 'e', 'c' };
 
         /// <summary>
         /// Write all template into text files to test if did it correctly.
@@ -54,7 +54,6 @@ namespace qunar
                             noutpath = string.Format("{0}/t_{1}_{2}.txt", outpath, c, i);
                             write_Template_To_Character(source, noutpath);
 #endif
-
                     }
                 }
             }
@@ -279,6 +278,7 @@ namespace qunar
             int h = source.Height;
             int green = Config.Green_Point_Amount;
             int red = Config.Red_Point_Amount;
+            int fail = 0;
             Color tmp = new Color();
             Color cGreen = Color.FromArgb(0, 255, 0);
             Color cRed = Color.FromArgb(255, 0, 0);
@@ -292,23 +292,85 @@ namespace qunar
                 rh = random.Next(0, h - 1);
 
                 tmp = source.GetPixel(rw, rh);
-                if (tmp.R + tmp.G + tmp.B == 0)
+                if (tmp.R + tmp.G + tmp.B == 0 && green > 0)
                 {
-                    // black
-                    if (green > 0 && judge_Can_Draw_This_Point(rw, rh, cGreen, cBlack, source))
-                    {
-                        green--;
-                        source.SetPixel(rw, rh, cGreen);
-                    }
+                    // black                    
+                    draw_Points_In_Template_Random(rw, rh, ref green, ref fail, cGreen, cBlack, source);
                 }
-                else if ((tmp.R & tmp.G & tmp.B) == 255)
+                else if ((tmp.R & tmp.G & tmp.B) == 255 && red > 0)
                 {
                     // white
-                    if (red > 0 && judge_Can_Draw_This_Point(rw, rh, cRed, cWhite, source))
+                    draw_Points_In_Template_Random(rw, rh, ref red, ref fail, cRed, cWhite, source);
+                }
+
+                if (fail == Config.Maximum_Failure_Times)
+                {
+                    fail = 0;
+                    if (green > 0)
+                    {
+                        green--;
+                        draw_Points_In_Template_Sequence(cGreen, cBlack, source);
+                    }
+                    if (red > 0)
                     {
                         red--;
-                        source.SetPixel(rw, rh, cRed);
+                        draw_Points_In_Template_Sequence(cRed, cWhite, source);
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// When fail Maximum_Failure_Times times, finding a paintable point using loop.
+        /// </summary>
+        /// <param name="drawColor"></param>
+        /// <param name="originColor"></param>
+        /// <param name="source"></param>
+        public static void draw_Points_In_Template_Sequence(Color drawColor, Color originColor, Bitmap source)
+        {
+            int i = 0, j = 0;
+            bool unpaint = true;
+            Color tmp = new Color();
+
+            for (i = 0; i < source.Width && unpaint; i++)
+            {
+                for (j = 0; j < source.Height && unpaint; j++)
+                {
+                    tmp = source.GetPixel(i, j);
+                    if (tmp.R == originColor.R && tmp.G == originColor.G && tmp.B == originColor.B && judge_Can_Draw_This_Point(i, j, drawColor, originColor, source))
+                    {
+                        source.SetPixel(i, j, drawColor);
+                        unpaint = false;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// When found a drawable position, judge if can paint this point or not.
+        /// </summary>
+        /// <param name="rh"></param>
+        /// <param name="rw"></param>
+        /// <param name="count"></param>
+        /// <param name="fail"></param>
+        /// <param name="drawColor"></param>
+        /// <param name="originColor"></param>
+        /// <param name="source"></param>
+        public static void draw_Points_In_Template_Random(int rw, int rh, ref int count, ref int fail, Color drawColor, Color originColor, Bitmap source)
+        {
+            bool allowDraw = true;
+            if (count > 0)
+            {
+                allowDraw = judge_Can_Draw_This_Point(rw, rh, drawColor, originColor, source);
+                if (allowDraw)
+                {
+                    fail = 0;
+                    count--;
+                    source.SetPixel(rw, rh, drawColor);
+                }
+                else
+                {
+                    fail++;
                 }
             }
         }

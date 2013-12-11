@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Branch.cs" />
     <Compile Include="Entity\Module.cs" />
+    <Compile Include="Operations\CalCorrectRate.cs" />
     <Compile Include="Operations\IO.cs" />
     <Compile Include="Operations\QunarFeatureOperations.cs" />
     <Compile Include="Operations\GenerateImageParts.cs" />

@@ -225,5 +225,38 @@ namespace qunar
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Read text files into memory
+        /// </summary>
+        /// <param name="inpath"></param>
+        /// <param name="fileType"></param>
+        /// <returns></returns>
+        public static List<string> read_Text_To_Memory(string inpath, FileType fileType)
+        {
+            List<string> str = new List<string>();
+
+            try
+            {
+                if (!File.Exists(inpath)) { return str; }
+                string line = null;
+                StreamReader sr = new StreamReader(inpath);
+
+                while (true)
+                {
+                    line = sr.ReadLine();
+                    if (string.IsNullOrEmpty(line))
+                    {
+                        break;
+                    }
+                    str.Add(line.Trim());
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("read_Text_To_Memory:" + e.Message);
+            }
+            return str;
+        }
     }
 }

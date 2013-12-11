@@ -23,6 +23,11 @@ namespace qunar
         private const int THRESHOLD = 100;
 
         /// <summary>
+        /// The largest length of verticel line segment.
+        /// </summary>
+        private const int LINE_LENGTH_THRESHOLD = 5;
+
+        /// <summary>
         /// The threshold sets for filtering the connected components whose size are smaller than the threshold.
         /// </summary>
         private const int CC_SIZE_THRESHOLD = 1000;
@@ -45,7 +50,7 @@ namespace qunar
         /// <summary>
         /// How many green points you would to draw in this template.
         /// </summary>
-        private const int GREEN_POINT_AMOUNT = 55;
+        private const int GREEN_POINT_AMOUNT = 60;
 
         /// <summary>
         /// How many red points you would to draw in this template.
@@ -73,7 +78,12 @@ namespace qunar
         /// we consider they are match.
         /// total score of a template = green * 3 + red * 7
         /// </summary>
-        private const double MATCH_LEAST_SCORE_PERCENT = 0.7;
+        private const double MATCH_LEAST_SCORE_PERCENT = 0.8;
+
+        /// <summary>
+        /// The maximum failure times of drawing points.
+        /// </summary>
+        private const int MAXIMUM_FAILURE_TIMES = 100;
 
         /// <summary>
         /// Sample files path.
@@ -121,9 +131,9 @@ namespace qunar
         private const string RESULT_SAVE_PATH = "../../../../qunar-file/result/result.txt";
 
         /// <summary>
-        /// The largest length of verticel line segment.
+        /// A text file which saves the correct results.
         /// </summary>
-        private const int LINE_LENGTH_THRESHOLD = 5;
+        private const string CORRECT_SAVE_PATH = "../../../../qunar-file/result/correct.txt";
 
         public static int ThresHold
         {
@@ -185,6 +195,11 @@ namespace qunar
             get { return MATCH_LEAST_SCORE_PERCENT; }
         }
 
+        public static int Maximum_Failure_Times
+        {
+            get { return MAXIMUM_FAILURE_TIMES; }
+        }
+
         public static string Sample_Path
         {
             get { return SAMPLE_PATH; }
@@ -228,6 +243,11 @@ namespace qunar
         public static string Result_Save_Path
         {
             get { return RESULT_SAVE_PATH; }
+        }
+
+        public static string Correct_Save_Path
+        {
+            get { return CORRECT_SAVE_PATH; }
         }
     }
 }

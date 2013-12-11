@@ -65,8 +65,8 @@ namespace qunar
             matrix = SetOperations.Remove_Matrix_Blank_Regions(ref w, ref h, source.Width, source.Height, matrix);
 
 #if Watch_Pre_Process_Result
-                // For debug, output the matrix into a text file.
-                IO.write_Matrix_To_Txt<byte>(w, h, matrix, Config.Test_Processed_Path + "/test" + DateTime.Now.Ticks.ToString() + ".txt");
+            // For debug, output the matrix into a text file.
+            IO.write_Matrix_To_Txt<byte>(w, h, matrix, Config.Test_Processed_Path + "/test" + DateTime.Now.Ticks.ToString() + ".txt");
 #endif
             ret = Recognition<byte>.Do_Image_Recognition(w, h, matrix, modules);
 #if Watch_Pre_Process_Result
@@ -83,6 +83,8 @@ namespace qunar
         {
             int branch = 0;
 
+            double correctRate=0.0;
+
             List<Module> modules = null;
 
             while (branch >= 0)
@@ -96,6 +98,7 @@ namespace qunar
                 sb.Append("4. Generate new templates using raw templates.\n");
                 sb.Append("5. Wirte template files into text files.\n");
                 sb.Append("6. Read template text files into memory.\n");
+                sb.Append("7. Judge how many character are correct.\n");
                 sb.Append("9. Exit.\n");
 
                 Console.Write(sb.ToString());
@@ -121,6 +124,10 @@ namespace qunar
                         break;
                     case 6:
                         modules = Template.read_Templates_To_Memory(Config.Processed_Template_Path, FileType.txt);
+                        break;
+                    case 7:
+                        correctRate = CalCorrectRate.calculate_Correct_Rate();
+                        Console.WriteLine(correctRate);
                         break;
                     case 9:
                         branch = -1;
