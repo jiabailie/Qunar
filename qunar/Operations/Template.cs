@@ -28,13 +28,14 @@ namespace qunar
         /// <param name="outpath"></param>
         public static void write_Template_Into_Text_Files(string inpath, string outpath, FileType fileType)
         {
+            int i = 0;
+            string ninpath = "";
+            string noutpath = "";
+            string filepath = "";
+            Bitmap source = null;
+
             try
             {
-                int i = 0;
-                string ninpath = "";
-                string noutpath = "";
-                string filepath = "";
-                Bitmap source = null;
                 foreach (char c in cset)
                 {
                     ninpath = inpath + c + "/";
@@ -62,11 +63,12 @@ namespace qunar
 
         public static List<Module> read_Templates_To_Memory(string inpath, FileType fileType)
         {
+            int i = 0;
+            string filepath = "";
             List<Module> modules = new List<Module>();
+
             try
             {
-                int i = 0;
-                string filepath = "";
                 foreach (char c in cset)
                 {
                     for (i = 0; i < (1 << 10); i++)
@@ -92,15 +94,15 @@ namespace qunar
         /// <param name="outpath"></param>
         public static void generate_Template_Into_Text(Bitmap source, string outpath)
         {
+            int i = 0, j = 0;
+            int score = 0;
+            int[,] matrix = new int[source.Width, source.Height];
+            int lt_w = int.MaxValue, lt_h = int.MaxValue;
+            int rb_w = int.MinValue, rb_h = int.MinValue;
+            StreamWriter sw = new StreamWriter(outpath);
+
             try
             {
-                int i = 0, j = 0;
-                int score = 0;
-                int[,] matrix = new int[source.Width, source.Height];
-                int lt_w = int.MaxValue, lt_h = int.MaxValue;
-                int rb_w = int.MinValue, rb_h = int.MinValue;
-                StreamWriter sw = new StreamWriter(outpath);
-
                 for (j = 0; j < source.Height; j++)
                 {
                     for (i = 0; i < source.Width; i++)
@@ -151,11 +153,11 @@ namespace qunar
         /// <param name="outpath"></param>
         public static void write_Template_To_Character(Bitmap source, string outpath)
         {
+            int i = 0, j = 0;
+            StreamWriter sw = new StreamWriter(outpath);
+
             try
             {
-                int i = 0, j = 0;
-                StreamWriter sw = new StreamWriter(outpath);
-
                 for (j = 0; j < source.Height; j++)
                 {
                     for (i = 0; i < source.Width; i++)
@@ -197,17 +199,17 @@ namespace qunar
         /// <returns></returns>
         public static Module read_Template_From_Text_To_Memory(char character, string inpath)
         {
+            int i = 0, j = 0;
+            int h = 0, w = 0;
+            int g = 0, r = 0;
+            int score = 0;
+            string tmp = null;
+            StreamReader sr = new StreamReader(inpath);
+
+            string[] split = sr.ReadLine().Trim().Split(' ');
+
             try
             {
-                int i = 0, j = 0;
-                int h = 0, w = 0;
-                int g = 0, r = 0;
-                int score = 0;
-                string tmp = null;
-                StreamReader sr = new StreamReader(inpath);
-
-                string[] split = sr.ReadLine().Trim().Split(' ');
-
                 h = Convert.ToByte(split[0]);
                 w = Convert.ToByte(split[1]);
                 g = Convert.ToByte(split[2]);
@@ -241,12 +243,13 @@ namespace qunar
         /// <param name="fileType"></param>
         public static void generate_Template_From_Img(string inpath, string outpath, FileType fileType)
         {
+            int i = 0;
+            string ninpath = "";
+            string noutpath = "";
+            Bitmap source = null;
+
             try
             {
-                int i = 0;
-                string ninpath = "";
-                string noutpath = "";
-                Bitmap source = null;
                 foreach (char c in cset)
                 {
                     for (i = 0; i < (1 << 10); i++)

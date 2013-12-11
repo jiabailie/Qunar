@@ -72,11 +72,11 @@ namespace qunar
         /// <param name="source"></param>
         public static void generate_White_Edges(Bitmap source)
         {
+            int i = 0;
+            Color white = Color.FromArgb(255, 255, 255);
+
             try
             {
-                int i = 0;
-                Color white = Color.FromArgb(255, 255, 255);
-
                 for (i = 0; i < source.Width; i++)
                 {
                     source.SetPixel(i, 0, white);
@@ -90,7 +90,7 @@ namespace qunar
             }
             catch (Exception e)
             {
-                throw new Exception(e.Message);
+                throw new Exception("generate_White_Edges:" + e.Message);
             }
         }
 
@@ -130,9 +130,10 @@ namespace qunar
         public static List<Bitmap> FindConnectedComponents(Bitmap source)
         {
             List<Bitmap> imageParts = new List<Bitmap>();
+            List<ConnectedComponent> ccImage = findAllConnectedComponents(source);
+
             try
             {
-                List<ConnectedComponent> ccImage = findAllConnectedComponents(source);
                 foreach (ConnectedComponent cc in ccImage)
                 {
                     imageParts.Add(SaveConnectedComponentAsBmp(cc, source));
@@ -163,9 +164,10 @@ namespace qunar
 
             visited[width, height] = true;
 
+            Queue<iPoint> pointQueue = new Queue<iPoint>();
+
             try
             {
-                Queue<iPoint> pointQueue = new Queue<iPoint>();
                 pointQueue.Enqueue(new iPoint(width, height));
                 while (pointQueue.Count > 0)
                 {
@@ -293,15 +295,15 @@ namespace qunar
         /// <param name="source"></param>
         public static void Remove_Suspending_Points(Bitmap source)
         {
+            int i = 0, j = 0, k = 0;
+            int black = 0, white = 0;
+            Color cblack = Color.FromArgb(0, 0, 0);
+            Color cwhite = Color.FromArgb(255, 255, 255);
+            int[] dx = new int[8] { -1, -1, -1, 0, 0, 1, 1, 1 };
+            int[] dy = new int[8] { -1, 0, 1, -1, 1, -1, 0, 1 };
+
             try
             {
-                int i = 0, j = 0, k = 0;
-                int black = 0, white = 0;
-                Color cblack = Color.FromArgb(0, 0, 0);
-                Color cwhite = Color.FromArgb(255, 255, 255);
-                int[] dx = new int[8] { -1, -1, -1, 0, 0, 1, 1, 1 };
-                int[] dy = new int[8] { -1, 0, 1, -1, 1, -1, 0, 1 };
-
                 for (i = 1; i < source.Width - 1; i++)
                 {
                     for (j = 1; j < source.Height - 1; j++)
@@ -344,11 +346,12 @@ namespace qunar
         /// <param name="source"></param>
         public static void Remove_Thin_Vertical_Lines(Bitmap source)
         {
+            int i = 0, j = 0;
+            int cnt = 0;
+            Color white = Color.FromArgb(255, 255, 255);
+
             try
             {
-                int i = 0, j = 0;
-                int cnt = 0;
-                Color white = Color.FromArgb(255, 255, 255);
                 for (i = 0; i < source.Width; i++)
                 {
                     cnt = 0;
@@ -389,15 +392,15 @@ namespace qunar
         /// <param name="source"></param>
         public static void find_Vertical_Black_Line_Segment(int vertical, ref int hs, ref int he, int trend, int las_hs, int las_he, Bitmap source)
         {
+            bool sfind = false;
+            int i = 0;
+            int tmpDiff = 0, minDiff = int.MaxValue;
+            int center = las_hs + (las_he - las_hs) / 2;
+            List<int> lhs = new List<int>();
+            List<int> lhe = new List<int>();
+
             try
             {
-                bool sfind = false;
-                int i = 0;
-                int tmpDiff = 0, minDiff = int.MaxValue;
-                int center = las_hs + (las_he - las_hs) / 2;
-                List<int> lhs = new List<int>();
-                List<int> lhe = new List<int>();
-
                 for (i = 0; i < source.Height; i++)
                 {
                     Color tmp = source.GetPixel(vertical, i);

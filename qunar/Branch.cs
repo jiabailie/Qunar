@@ -1,4 +1,6 @@
-﻿#define Remove_Thin_Vertical_Line
+﻿#define WATCH_PREPROCESS_RESULT
+#undef  WATCH_PREPROCESS_RESULT
+#define Remove_Thin_Vertical_Line
 #define Find_Long_Thin_Lines
 #define Remove_Suspending_Points
 #undef  Remove_Thin_Vertical_Line
@@ -18,6 +20,53 @@ namespace qunar
     public class Branch
     {
         /// <summary>
+        /// Recognition branch.
+        /// </summary>
+        /// <param name="args"></param>
+        public static void recognition_Branch(string[] args)
+        {
+            int w = 0, h = 0;
+            string ret = "";
+            Bitmap source = null;
+            iLine iline1 = null;
+            iLine iline2 = null;
+            List<Module> modules = null;
+            byte[,] matrix = null;
+
+            modules = Template.read_Templates_To_Memory(Config.Processed_Template_Path, FileType.txt);
+
+            if (!File.Exists(args[0])) { return; }
+
+            source = Operations.ConvertJpg2Bmp(args[0]);
+
+            w = source.Width;
+            h = source.Height;
+
+            // Do uniformization operation
+            Operations.UniformizationBmp(source);
+
+            // Remove black edges
+            Operations.generate_White_Edges(source);
+
+            // Find the long black line
+            iline1 = QunarFeatureOperations.Find_Long_Connected_Lines(source.Width - 1, 0, -1, source);
+            iline2 = QunarFeatureOperations.Find_Long_Connected_Lines(0, source.Width - 1, 1, source);
+
+            // Transform the processed input image into 0/1 matrix.
+            matrix = SetOperations.Transform_Image_To_Matrix(source);
+
+            // Remove the redundant white regions.
+            matrix = SetOperations.Remove_Matrix_Blank_Regions(ref w, ref h, source.Width, source.Height, matrix);
+
+#if WATCH_PREPROCESS_RESULT
+                // For debug, output the matrix into a text file.
+                IO.write_Matrix_To_Txt<byte>(w, h, matrix, Config.Test_Processed_Path + "/test" + DateTime.Now.Ticks.ToString() + ".txt");
+#endif
+            ret = Recognition<byte>.Do_Image_Recognition(w, h, matrix, modules);
+            Console.WriteLine(ret);
+        }
+
+        /// <summary>
         /// Programe branch.
         /// </summary>
         public static void main_Branch()
@@ -34,7 +83,7 @@ namespace qunar
                 sb.Append("1. Write bmp into text files using threshold.\n");
                 sb.Append("2. Write bmp into bmp files using threshold.\n");
                 sb.Append("3. Recognize the long black lines and write them into bmp files.\n");
-                sb.Append("4. Generate new templates using raw templates.\n"); 
+                sb.Append("4. Generate new templates using raw templates.\n");
                 sb.Append("5. Wirte template files into text files.\n");
                 sb.Append("6. Read template text files into memory.\n");
                 sb.Append("9. Exit.\n");
@@ -72,6 +121,7 @@ namespace qunar
                 }
             }
         }
+
         /// <summary>
         /// Write the bmp images into number format to judge the threshold.
         /// </summary>
@@ -99,6 +149,62 @@ namespace qunar
                         if (!File.Exists(inpath)) { break; }
 
                         IO.write_Bmp_To_Avg_Number(inpath, outpath);
+                    }
+                }
+                catch (Exception) { }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Using Threshold to process image and write them into certain position.
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <param name="savepath"></param>
+        /// <param name="filetype"></param>
+        public static void write_Bmp_To_Bmp_Using_Threshold(string filepath, string savepath, FileType filetype)
+        {
+            try
+            {
+                if (filetype != FileType.bmp && filetype != FileType.jpg)
+                {
+                    throw new Exception("The file type is not image.");
+                }
+
+                string inpath = "";
+                string outpath = "";
+                Bitmap bitmap = null;
+                try
+                {
+                    for (int i = 0; i < (1 << 10); i++)
+                    {
+                        inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
+                        outpath = savepath + "0(" + i.ToString() + ")." + FileType.bmp.ToString();
+
+                        if (!File.Exists(inpath)) { break; }
+
+                        bitmap = Operations.ConvertJpg2Bmp(inpath);
+
+                        // Do uniformization operation
+                        Operations.UniformizationBmp(bitmap);
+
+                        // Remove black edges
+                        Operations.generate_White_Edges(bitmap);
+
+#if     Remove_Suspending_Points
+                        // Remove suspending points
+                        Operations.Remove_Suspending_Points(bitmap);
+#endif
+
+#if     Remove_Thin_Vertical_Line
+                        // Remove thin vertical lines
+                        Operations.Remove_Thin_Vertical_Lines(bitmap);
+#endif
+
+                        bitmap.Save(outpath, ImageFormat.Bmp);
                     }
                 }
                 catch (Exception) { }
@@ -190,62 +296,6 @@ namespace qunar
                         // Find the long black line
                         iLine iline1 = QunarFeatureOperations.Find_Long_Connected_Lines(bitmap.Width - 1, 0, -1, bitmap);
                         iLine iline2 = QunarFeatureOperations.Find_Long_Connected_Lines(0, bitmap.Width - 1, 1, bitmap);
-
-                        bitmap.Save(outpath, ImageFormat.Bmp);
-                    }
-                }
-                catch (Exception) { }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
-        /// <summary>
-        /// Using Threshold to process image and write them into certain position.
-        /// </summary>
-        /// <param name="filepath"></param>
-        /// <param name="savepath"></param>
-        /// <param name="filetype"></param>
-        public static void write_Bmp_To_Bmp_Using_Threshold(string filepath, string savepath, FileType filetype)
-        {
-            try
-            {
-                if (filetype != FileType.bmp && filetype != FileType.jpg)
-                {
-                    throw new Exception("The file type is not image.");
-                }
-
-                string inpath = "";
-                string outpath = "";
-                Bitmap bitmap = null;
-                try
-                {
-                    for (int i = 0; i < (1 << 10); i++)
-                    {
-                        inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
-                        outpath = savepath + "0(" + i.ToString() + ")." + FileType.bmp.ToString();
-
-                        if (!File.Exists(inpath)) { break; }
-
-                        bitmap = Operations.ConvertJpg2Bmp(inpath);
-
-                        // Do uniformization operation
-                        Operations.UniformizationBmp(bitmap);
-
-                        // Remove black edges
-                        Operations.generate_White_Edges(bitmap);
-
-#if     Remove_Suspending_Points
-                        // Remove suspending points
-                        Operations.Remove_Suspending_Points(bitmap);
-#endif
-
-#if     Remove_Thin_Vertical_Line
-                        // Remove thin vertical lines
-                        Operations.Remove_Thin_Vertical_Lines(bitmap);
-#endif
 
                         bitmap.Save(outpath, ImageFormat.Bmp);
                     }

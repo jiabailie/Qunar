@@ -17,11 +17,11 @@ namespace qunar
         /// <param name="outpath"></param>
         public static void write_Bmp_To_RGB_Number(Bitmap source, string outpath)
         {
+            int i = 0, j = 0;
+            StreamWriter sw = new StreamWriter(outpath);
+
             try
             {
-                int i = 0, j = 0;
-                StreamWriter sw = new StreamWriter(outpath);
-
                 for (j = 0; j < source.Height; j++)
                 {
                     for (i = 0; i < source.Width; i++)
@@ -51,14 +51,16 @@ namespace qunar
         /// <param name="outpath"></param>
         public static void write_Bmp_To_Avg_Number(string inpath, string outpath)
         {
+            int i = 0, j = 0;
+
+            Bitmap source = Operations.ConvertJpg2Bmp(inpath);
+
+            int[,] avgImg = new int[source.Height, source.Width];
+
+            StreamWriter sw = new StreamWriter(outpath);
+
             try
             {
-                Bitmap source = Operations.ConvertJpg2Bmp(inpath);
-                int i = 0, j = 0;
-                StreamWriter sw = new StreamWriter(outpath);
-
-                int[,] avgImg = new int[source.Height, source.Width];
-
                 for (i = 0; i < source.Height; i++)
                 {
                     for (j = 0; j < source.Width; j++)
@@ -91,14 +93,14 @@ namespace qunar
         /// <param name="outpath"></param>
         public static void write_Bmp_To_Avg_Number(Bitmap source, string outpath)
         {
+            int i = 0, j = 0, max = 0;
+            StreamWriter sw = new StreamWriter(outpath);
+
+            int[,] avgImg = new int[source.Height, source.Width];
+            int[] cnt = new int[source.Width];
+
             try
             {
-                int i = 0, j = 0, max = 0;
-                StreamWriter sw = new StreamWriter(outpath);
-
-                int[,] avgImg = new int[source.Height, source.Width];
-                int[] cnt = new int[source.Width];
-
                 for (i = 0; i < source.Height; i++)
                 {
                     for (j = 0; j < source.Width; j++)
@@ -172,11 +174,11 @@ namespace qunar
         /// <param name="outpath"></param>
         public static void write_Matrix_To_Txt<T>(int w, int h, T[,] matrix, string outpath) where T : IComparable<T>
         {
+            int i = 0, j = 0;
+            StreamWriter sw = new StreamWriter(outpath);
+
             try
             {
-                int i = 0, j = 0;
-                StreamWriter sw = new StreamWriter(outpath);
-
                 for (i = 0; i < h; i++)
                 {
                     for (j = 0; j < w; j++)

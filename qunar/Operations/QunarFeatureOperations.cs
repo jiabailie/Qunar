@@ -41,20 +41,20 @@ namespace qunar
         /// <returns></returns>
         public static iLine Find_Long_Connected_Lines(int start, int end, int inc, Bitmap source)
         {
+            // The line ascend or descend trend
+            // which equals to left - right
+            // == 0 level
+            // > 0 ascend
+            // < 0 descend
+            int trend = 0;
+            int i = 0, j = 0;
+            int pre_hs = -1, pre_he = -1;
+            int las_hs = -1, las_he = -1;
+            int s = -1, hs = -1, he = -1;
+            iLine iline = new iLine();
+
             try
             {
-                // The line ascend or descend trend
-                // which equals to left - right
-                // == 0 level
-                // > 0 ascend
-                // < 0 descend
-                int trend = 0;
-                int i = 0, j = 0;
-                int pre_hs = -1, pre_he = -1;
-                int las_hs = -1, las_he = -1;
-                int s = -1, hs = -1, he = -1;
-                iLine iline = new iLine();
-
                 // From right to left, to find the start position
                 // Find the first vertical black line, from right to left or in the reverse direction.
                 for (i = start; i != end && hs == -1 && he == -1; i += inc)
@@ -133,22 +133,20 @@ namespace qunar
         /// <param name="source"></param>
         public static void Deal_With_ILines(iLine iline, Bitmap source)
         {
-            try
-            {
-                int i = 0;
+            int i = 0;
 #if Paint_Green
 #if Remove_Green_part
                 Color green = Color.FromArgb(255, 255, 255);
 #else
-                Color green = Color.FromArgb(0, 255, 0);
+            Color green = Color.FromArgb(0, 255, 0);
 #endif
-                foreach (oneWidthLine oline in iline.OneLineSet)
+            foreach (oneWidthLine oline in iline.OneLineSet)
+            {
+                for (i = oline.dStart; i <= oline.dEnd; i++)
                 {
-                    for (i = oline.dStart; i <= oline.dEnd; i++)
-                    {
-                        source.SetPixel(oline.sPos, i, green);
-                    }
+                    source.SetPixel(oline.sPos, i, green);
                 }
+            }
 #endif
 
 #if Paint_Yellow
@@ -156,12 +154,15 @@ namespace qunar
 #if Paint_Yellow_To_Black
                 Color yellow = Color.FromArgb(0, 0, 0);
 #else
-                Color yellow = Color.FromArgb(255, 255, 0);
+            Color yellow = Color.FromArgb(255, 255, 0);
 #endif
-                Color up = new Color();
-                Color down = new Color();
-                bool fup = false;
-                bool fdo = false;
+            Color up = new Color();
+            Color down = new Color();
+            bool fup = false;
+            bool fdo = false;
+
+            try
+            {
                 foreach (oneWidthLine oline in iline.OneLineSet)
                 {
                     fup = false;
