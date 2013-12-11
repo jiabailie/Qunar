@@ -279,6 +279,8 @@ namespace qunar
             Color tmp = new Color();
             Color cGreen = Color.FromArgb(0, 255, 0);
             Color cRed = Color.FromArgb(255, 0, 0);
+            Color cBlack = Color.FromArgb(0, 0, 0);
+            Color cWhite = Color.FromArgb(255, 255, 255);
             Random random = new Random();
 
             while (green > 0 || red > 0)
@@ -290,22 +292,81 @@ namespace qunar
                 if (tmp.R + tmp.G + tmp.B == 0)
                 {
                     // black
-                    if (green > 0)
+                    if (green > 0 && judge_Can_Draw_This_Point(rw, rh, cGreen, cBlack, source))
                     {
                         green--;
                         source.SetPixel(rw, rh, cGreen);
                     }
                 }
-                else
+                else if ((tmp.R & tmp.G & tmp.B) == 255)
                 {
                     // white
-                    if (red > 0)
+                    if (red > 0 && judge_Can_Draw_This_Point(rw, rh, cRed, cWhite, source))
                     {
                         red--;
                         source.SetPixel(rw, rh, cRed);
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Judge if this point can be drawn.
+        /// Ensure its four directly neighbour haven't been paint using this color.
+        /// </summary>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
+        /// <param name="drawColor"></param>
+        /// <param name="originColor"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static bool judge_Can_Draw_This_Point(int w, int h, Color drawColor, Color originColor, Bitmap source)
+        {
+            int i = 0;
+            bool draw = true;
+            int nw = 0, nh = 0;
+            int neighbour = 0;
+            Color tmp = new Color();
+            int[] dw = new int[] { 1, -1, 0, 0, 1, 1, -1, -1 };
+            int[] dh = new int[] { 0, 0, 1, -1, 1, -1, 1, -1 };
+
+            for (i = 0; i < 4; i++)
+            {
+                nw = w + dw[i];
+                nh = h + dh[i];
+                if (nw >= 0 && nw < source.Width && nh >= 0 && nh < source.Height)
+                {
+                    tmp = source.GetPixel(nw, nh);
+                    if (tmp.R == drawColor.R && tmp.G == drawColor.G && tmp.B == drawColor.B)
+                    {
+                        draw = false;
+                        break;
+                    }
+                }
+            }
+
+            if (draw)
+            {
+                for (i = 0; i < 8; i++)
+                {
+                    nw = w + dw[i];
+                    nh = h + dh[i];
+                    if (nw >= 0 && nw < source.Width && nh >= 0 && nh < source.Height)
+                    {
+                        tmp = source.GetPixel(nw, nh);
+                        if ((tmp.R == originColor.R && tmp.G == originColor.G && tmp.B == originColor.B) || (tmp.R == drawColor.R && tmp.G == drawColor.G && tmp.B == drawColor.B))
+                        {
+                            neighbour++;
+                        }
+                    }
+                }
+                if (neighbour < Config.Draw_Neighbour_Condition)
+                {
+                    draw = false;
+                }
+            }
+
+            return draw;
         }
     }
 }
