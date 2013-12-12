@@ -83,7 +83,7 @@ namespace qunar
         /// <summary>
         /// The maximum failure times of drawing points.
         /// </summary>
-        private const int MAXIMUM_FAILURE_TIMES = 100;
+        private const int MAXIMUM_FAILURE_TIMES = 20;
 
         /// <summary>
         /// Sample files path.
