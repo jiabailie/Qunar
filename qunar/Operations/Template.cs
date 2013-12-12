@@ -295,12 +295,12 @@ namespace qunar
                 if (tmp.R + tmp.G + tmp.B == 0 && green > 0)
                 {
                     // black                    
-                    draw_Points_In_Template_Random(rw, rh, ref green, ref fail, cGreen, cBlack, source);
+                    draw_Points_In_Template_Random(rw, rh, Config.Draw_Neighbour_Black_Condition, ref green, ref fail, cGreen, cBlack, source);
                 }
                 else if ((tmp.R & tmp.G & tmp.B) == 255 && red > 0)
                 {
                     // white
-                    draw_Points_In_Template_Random(rw, rh, ref red, ref fail, cRed, cWhite, source);
+                    draw_Points_In_Template_Random(rw, rh, Config.Draw_Neighbour_White_Condition, ref red, ref fail, cRed, cWhite, source);
                 }
 
                 if (fail == Config.Maximum_Failure_Times)
@@ -309,12 +309,12 @@ namespace qunar
                     if (green > 0)
                     {
                         green--;
-                        draw_Points_In_Template_Sequence(cGreen, cBlack, source);
+                        draw_Points_In_Template_Sequence(Config.Draw_Neighbour_Black_Condition, cGreen, cBlack, source);
                     }
                     if (red > 0)
                     {
                         red--;
-                        draw_Points_In_Template_Sequence(cRed, cWhite, source);
+                        draw_Points_In_Template_Sequence(Config.Draw_Neighbour_White_Condition, cRed, cWhite, source);
                     }
                 }
             }
@@ -323,10 +323,11 @@ namespace qunar
         /// <summary>
         /// When fail Maximum_Failure_Times times, finding a paintable point using loop.
         /// </summary>
+        /// <param name="neighbourCondition"></param>
         /// <param name="drawColor"></param>
         /// <param name="originColor"></param>
         /// <param name="source"></param>
-        public static void draw_Points_In_Template_Sequence(Color drawColor, Color originColor, Bitmap source)
+        public static void draw_Points_In_Template_Sequence(int neighbourCondition, Color drawColor, Color originColor, Bitmap source)
         {
             int i = 0, j = 0;
             bool unpaint = true;
@@ -337,7 +338,7 @@ namespace qunar
                 for (j = 0; j < source.Height && unpaint; j++)
                 {
                     tmp = source.GetPixel(i, j);
-                    if (tmp.R == originColor.R && tmp.G == originColor.G && tmp.B == originColor.B && judge_Can_Draw_This_Point(i, j, drawColor, originColor, source))
+                    if (tmp.R == originColor.R && tmp.G == originColor.G && tmp.B == originColor.B && judge_Can_Draw_This_Point(i, j, neighbourCondition, drawColor, originColor, source))
                     {
                         source.SetPixel(i, j, drawColor);
                         unpaint = false;
@@ -349,19 +350,20 @@ namespace qunar
         /// <summary>
         /// When found a drawable position, judge if can paint this point or not.
         /// </summary>
-        /// <param name="rh"></param>
         /// <param name="rw"></param>
+        /// <param name="rh"></param>
+        /// <param name="neighbourCondition"></param>
         /// <param name="count"></param>
         /// <param name="fail"></param>
         /// <param name="drawColor"></param>
         /// <param name="originColor"></param>
         /// <param name="source"></param>
-        public static void draw_Points_In_Template_Random(int rw, int rh, ref int count, ref int fail, Color drawColor, Color originColor, Bitmap source)
+        public static void draw_Points_In_Template_Random(int rw, int rh, int neighbourCondition, ref int count, ref int fail, Color drawColor, Color originColor, Bitmap source)
         {
             bool allowDraw = true;
             if (count > 0)
             {
-                allowDraw = judge_Can_Draw_This_Point(rw, rh, drawColor, originColor, source);
+                allowDraw = judge_Can_Draw_This_Point(rw, rh, neighbourCondition, drawColor, originColor, source);
                 if (allowDraw)
                 {
                     fail = 0;
@@ -381,11 +383,12 @@ namespace qunar
         /// </summary>
         /// <param name="w"></param>
         /// <param name="h"></param>
+        /// <param name="neighbourCondition"></param>
         /// <param name="drawColor"></param>
         /// <param name="originColor"></param>
         /// <param name="source"></param>
         /// <returns></returns>
-        public static bool judge_Can_Draw_This_Point(int w, int h, Color drawColor, Color originColor, Bitmap source)
+        public static bool judge_Can_Draw_This_Point(int w, int h, int neighbourCondition, Color drawColor, Color originColor, Bitmap source)
         {
             int i = 0;
             bool draw = true;
@@ -425,7 +428,7 @@ namespace qunar
                         }
                     }
                 }
-                if (neighbour < Config.Draw_Neighbour_Condition)
+                if (neighbour < neighbourCondition)
                 {
                     draw = false;
                 }

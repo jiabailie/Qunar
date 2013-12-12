@@ -18,15 +18,23 @@ namespace qunar
         public static double calculate_Correct_Rate()
         {
             int i = 0;
+            int lcs = 0;
             double rate = 0.0;
             double totalLen = 0.0;
             double correctLen = 0.0;
             List<string> result = IO.read_Text_To_Memory(Config.Result_Save_Path, FileType.txt);
             List<string> correct = IO.read_Text_To_Memory(Config.Correct_Save_Path, FileType.txt);
 
-            for (i = 0; i < correct.Count; i++)
+            for (i = 0; i < result.Count; i++)
             {
                 totalLen += correct[i].Length;
+
+#if WATCH_FULL_MATCH_STRING
+                if (correct[i] == result[i])
+                {
+                    Console.WriteLine(string.Format("{0} {1}", i, correct[i]));
+                }
+#endif
                 correctLen += LCS(correct[i], result[i]);
             }
             rate = correctLen / totalLen;
@@ -60,13 +68,6 @@ namespace qunar
                     }
                 }
             }
-
-#if WATCH_FULL_MATCH_STRING
-            if (dp[n, m] == a.Length)
-            {
-                Console.WriteLine(a);
-            }
-#endif
             return dp[n, m];
         }
     }

@@ -50,12 +50,12 @@ namespace qunar
         /// <summary>
         /// How many green points you would to draw in this template.
         /// </summary>
-        private const int GREEN_POINT_AMOUNT = 77;
+        private const int GREEN_POINT_AMOUNT = 65;
 
         /// <summary>
         /// How many red points you would to draw in this template.
         /// </summary>
-        private const int RED_POINT_AMOUNT = 37;
+        private const int RED_POINT_AMOUNT = 20;
 
         /// <summary>
         /// How many score one green dot has.
@@ -68,10 +68,16 @@ namespace qunar
         private const int RED_SCORE = 7;
 
         /// <summary>
-        /// When drawing a red or green point
+        /// When drawing a green point
         /// The neighbour should satisfy the minimus amount.
         /// </summary>
-        private const int DRAW_NEIGHBOUR_CONDITION = 6;
+        private const int DRAW_NEIGHBOUR_BLACK_CONDITION = 7;
+
+        /// <summary>
+        /// When drawing a red point
+        /// The neighbour should satisfy the minimus amount.
+        /// </summary>
+        private const int DRAW_NEIGHBOUR_WHITE_CONDITION = 8;
 
         /// <summary>
         /// If and only if some image get score more than (MATCH_LEAST_SCORE_PERCENT * (total score of a template)),
@@ -185,9 +191,14 @@ namespace qunar
             get { return RED_SCORE; }
         }
 
-        public static int Draw_Neighbour_Condition
+        public static int Draw_Neighbour_Black_Condition
         {
-            get { return DRAW_NEIGHBOUR_CONDITION; }
+            get { return DRAW_NEIGHBOUR_BLACK_CONDITION; }
+        }
+
+        public static int Draw_Neighbour_White_Condition
+        {
+            get { return DRAW_NEIGHBOUR_WHITE_CONDITION; }
         }
 
         public static double Match_Least_Score_Percent
