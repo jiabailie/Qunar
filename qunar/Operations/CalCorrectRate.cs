@@ -18,7 +18,6 @@ namespace qunar
         public static double calculate_Correct_Rate()
         {
             int i = 0;
-            int lcs = 0;
             double rate = 0.0;
             double totalLen = 0.0;
             double correctLen = 0.0;

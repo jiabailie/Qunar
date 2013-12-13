@@ -436,5 +436,28 @@ namespace qunar
 
             return draw;
         }
+
+        /// <summary>
+        /// Calculate the amount of each template.
+        /// </summary>
+        /// <param name="modules"></param>
+        /// <returns></returns>
+        public static Dictionary<char, int> calculate_Template_Kinds(List<Module> modules)
+        {
+            Dictionary<char, int> cntModules = new Dictionary<char, int>();
+
+            foreach (Module m in modules)
+            {
+                if (cntModules.ContainsKey(m.character))
+                {
+                    cntModules[m.character]++;
+                }
+                else
+                {
+                    cntModules.Add(m.character, 1);
+                }
+            }
+            return cntModules;
+        }
     }
 }

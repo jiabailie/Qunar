@@ -33,8 +33,9 @@ namespace qunar
             Bitmap source = null;
             iLine iline1 = null;
             iLine iline2 = null;
-            List<Module> modules = null;
             byte[,] matrix = null;
+
+            List<Module> modules = null;
 
             modules = Template.read_Templates_To_Memory(Config.Processed_Template_Path, FileType.txt);
 
@@ -83,7 +84,7 @@ namespace qunar
         {
             int branch = 0;
 
-            double correctRate=0.0;
+            double correctRate = 0.0;
 
             List<Module> modules = null;
 
