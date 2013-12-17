@@ -112,7 +112,7 @@ namespace qunar
                         Branch.write_Bmp_To_Txt_Using_Threshold(Config.Sample_Path, Config.Binary_Bmp_Images_Path, FileType.jpg);
                         break;
                     case 2:
-                        Branch.write_Bmp_To_Bmp_Using_Threshold(Config.Sample_Path, Config.Binary_Path, FileType.jpg);
+                        Branch.write_Bmp_To_Bmp_Using_Threshold(Config.Sample_Path, Config.Binary_Path, FileType.bmp);
                         break;
                     case 3:
                         Branch.write_Long_Black_Lines_Into_Files(Config.Sample_Path, Config.Long_Black_Line_Path, FileType.jpg);

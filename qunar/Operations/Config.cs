@@ -50,12 +50,12 @@ namespace qunar
         /// <summary>
         /// How many green points you would to draw in this template.
         /// </summary>
-        private const int GREEN_POINT_AMOUNT = 70;
+        private const int GREEN_POINT_AMOUNT = 30;
 
         /// <summary>
         /// How many red points you would to draw in this template.
         /// </summary>
-        private const int RED_POINT_AMOUNT = 37;
+        private const int RED_POINT_AMOUNT = 15;
 
         /// <summary>
         /// How many score one green dot has.
@@ -71,7 +71,7 @@ namespace qunar
         /// When drawing a green point
         /// The neighbour should satisfy the minimus amount.
         /// </summary>
-        private const int DRAW_NEIGHBOUR_BLACK_CONDITION = 6;
+        private const int DRAW_NEIGHBOUR_BLACK_CONDITION = 7;
 
         /// <summary>
         /// When drawing a red point
