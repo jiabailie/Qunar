@@ -1,7 +1,9 @@
-﻿#define Watch_Pre_Process_Result
+﻿#define Using_Non_Optimize_Branch
+#define Watch_Pre_Process_Result
 #define Remove_Thin_Vertical_Line
 #define Find_Long_Thin_Lines
 #define Remove_Suspending_Points
+#undef  Using_Non_Optimize_Branch
 #undef  Watch_Pre_Process_Result
 #undef  Remove_Thin_Vertical_Line
 #undef  Find_Long_Thin_Lines
@@ -52,6 +54,7 @@ namespace qunar
             // Do uniformization operation
             Operations.UniformizationBmp(source);
 
+#if Using_Non_Optimize_Branch
             // Remove black edges
             Operations.generate_White_Edges(source);
 
@@ -61,7 +64,20 @@ namespace qunar
 
             // Transform the processed input image into 0/1 matrix.
             matrix = SetOperations.Transform_Image_To_Matrix(source);
+#else
 
+            // Transform the processed input image into 0/1 matrix.
+            matrix = SetOperations.Transform_Image_To_Matrix(source);
+
+            // Remove black edges
+            Optimize.generate_White_Edges(w, h, ref matrix);
+
+            // Find the long black line
+            iline1 = Optimize.Find_Long_Connected_Lines(w - 1, 0, -1, w, h, matrix);
+
+            iline2 = Optimize.Find_Long_Connected_Lines(0, w - 1, 1, w, h, matrix);
+
+#endif
             // Remove the redundant white regions.
             matrix = SetOperations.Remove_Matrix_Blank_Regions(ref w, ref h, source.Width, source.Height, matrix);
 
@@ -69,6 +85,8 @@ namespace qunar
             // For debug, output the matrix into a text file.
             IO.write_Matrix_To_Txt<byte>(w, h, matrix, Config.Test_Processed_Path + "/test" + DateTime.Now.Ticks.ToString() + ".txt");
 #endif
+
+
             ret = Recognition<byte>.Do_Image_Recognition(w, h, matrix, modules);
 #if Watch_Pre_Process_Result
             IO.write_Result_To_Text_File(string.Format("{0} {1}", args[0].Substring(s + 1, e - s - 1), ret), Config.Result_Save_Path);

@@ -92,6 +92,16 @@ namespace qunar
         private const int MAXIMUM_FAILURE_TIMES = 20;
 
         /// <summary>
+        /// Using one integer to represent green.
+        /// </summary>
+        private const byte INT_GREEN = 2;
+
+        /// <summary>
+        /// Using one integer to represent yellow.
+        /// </summary>
+        private const byte INT_YELLOW = 3;
+
+        /// <summary>
         /// Sample files path.
         /// </summary>
         private const string SAMPLE_PATH = "../../../../qunar-file/samples/";
@@ -209,6 +219,16 @@ namespace qunar
         public static int Maximum_Failure_Times
         {
             get { return MAXIMUM_FAILURE_TIMES; }
+        }
+
+        public static byte Int_Green
+        {
+            get { return INT_GREEN; }
+        }
+
+        public static byte Int_Yellow
+        {
+            get { return INT_YELLOW; }
         }
 
         public static string Sample_Path

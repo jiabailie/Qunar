@@ -392,8 +392,8 @@ namespace qunar
         /// <param name="source"></param>
         public static void find_Vertical_Black_Line_Segment(int vertical, ref int hs, ref int he, int trend, int las_hs, int las_he, Bitmap source)
         {
-            bool sfind = false;
             int i = 0;
+            bool sfind = false;            
             int tmpDiff = 0, minDiff = int.MaxValue;
             int center = las_hs + (las_he - las_hs) / 2;
             List<int> lhs = new List<int>();

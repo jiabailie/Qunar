@@ -64,7 +64,7 @@ namespace qunar
                         Color tmp = source.GetPixel(i, j);
                         if (tmp.R + tmp.G + tmp.B == 0)
                         {
-                            // if this vertical single line is the rightest single black line
+                            // if this vertical single line is the rightmost single black line
                             if (s == -1) { s = i; }
 
                             // if this point is the topest point of this single black line
