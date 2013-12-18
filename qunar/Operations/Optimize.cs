@@ -208,6 +208,8 @@ namespace qunar
 
             for (i = s + 2 * inc; i != end; i += inc)
             {
+                if (i < 0 || i >= h) { break; }
+
                 find_Vertical_Black_Line_Segment(i, ref hs, ref he, trend, las_hs, las_he, w, h, matrix);
 
                 if (hs == -1 && he == -1)

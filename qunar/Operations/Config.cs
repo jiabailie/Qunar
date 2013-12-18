@@ -50,12 +50,12 @@ namespace qunar
         /// <summary>
         /// How many green points you would to draw in this template.
         /// </summary>
-        private const int GREEN_POINT_AMOUNT = 30;
+        private const int GREEN_POINT_AMOUNT = 70;
 
         /// <summary>
         /// How many red points you would to draw in this template.
         /// </summary>
-        private const int RED_POINT_AMOUNT = 15;
+        private const int RED_POINT_AMOUNT = 37;
 
         /// <summary>
         /// How many score one green dot has.
@@ -71,7 +71,7 @@ namespace qunar
         /// When drawing a green point
         /// The neighbour should satisfy the minimus amount.
         /// </summary>
-        private const int DRAW_NEIGHBOUR_BLACK_CONDITION = 7;
+        private const int DRAW_NEIGHBOUR_BLACK_CONDITION = 6;
 
         /// <summary>
         /// When drawing a red point
@@ -84,22 +84,12 @@ namespace qunar
         /// we consider they are match.
         /// total score of a template = green * 3 + red * 7
         /// </summary>
-        private const double MATCH_LEAST_SCORE_PERCENT = 0.8;
+        private const double MATCH_LEAST_SCORE_PERCENT = 0.90;
 
         /// <summary>
         /// The maximum failure times of drawing points.
         /// </summary>
         private const int MAXIMUM_FAILURE_TIMES = 20;
-
-        /// <summary>
-        /// Using one integer to represent green.
-        /// </summary>
-        private const byte INT_GREEN = 2;
-
-        /// <summary>
-        /// Using one integer to represent yellow.
-        /// </summary>
-        private const byte INT_YELLOW = 3;
 
         /// <summary>
         /// Sample files path.
@@ -219,16 +209,6 @@ namespace qunar
         public static int Maximum_Failure_Times
         {
             get { return MAXIMUM_FAILURE_TIMES; }
-        }
-
-        public static byte Int_Green
-        {
-            get { return INT_GREEN; }
-        }
-
-        public static byte Int_Yellow
-        {
-            get { return INT_YELLOW; }
         }
 
         public static string Sample_Path
