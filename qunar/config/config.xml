@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<Config>
+  <ThresHold>100</ThresHold>
+  <Line_Length_Threshold>5</Line_Length_Threshold>
+  <CC_Size_Threshold>1000</CC_Size_Threshold>
+  <Vertical_Threshold>6</Vertical_Threshold>
+  <Position_Threshold>1</Position_Threshold>
+  <Backward_Distance>-2</Backward_Distance>
+  <Green_Point_Amount>70</Green_Point_Amount>
+  <Red_Point_Amount>37</Red_Point_Amount>
+  <Green_Score>3</Green_Score>
+  <Red_Score>7</Red_Score>
+  <Draw_Neighbour_Black_Condition>6</Draw_Neighbour_Black_Condition>
+  <Draw_Neighbour_White_Condition>8</Draw_Neighbour_White_Condition>
+  <Match_Least_Score_Percent>0.9</Match_Least_Score_Percent>
+  <Maximum_Failure_Times>20</Maximum_Failure_Times>
+  <Sample_Path>../../../../qunar-file/samples/</Sample_Path>
+  <Template_Path>../../../../qunar-file/template/</Template_Path>
+  <Binary_Path>../../../../qunar-file/binary/</Binary_Path>
+  <Long_Black_Line_Path>../../../../qunar-file/bmp/</Long_Black_Line_Path>
+  <Binary_Bmp_Images_Path>../../../../qunar-file/txt/</Binary_Bmp_Images_Path>
+  <Processed_Template_Path>../../../../qunar-file/ttxt/</Processed_Template_Path>
+  <Test_Processed_Path>../../../../qunar-file/test/</Test_Processed_Path>
+  <Raw_template_Path>../../../../qunar-file/rtemplate/</Raw_template_Path>
+  <Result_Save_Path>../../../../qunar-file/result/result.txt</Result_Save_Path>
+  <Correct_Save_Path>../../../../qunar-file/result/correct.txt</Correct_Save_Path>
+</Config>
