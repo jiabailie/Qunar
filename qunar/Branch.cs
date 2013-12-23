@@ -86,7 +86,6 @@ namespace qunar
             IO.write_Matrix_To_Txt<byte>(w, h, matrix, Config.Test_Processed_Path + "/test" + DateTime.Now.Ticks.ToString() + ".txt");
 #endif
 
-
             ret = Recognition<byte>.Do_Image_Recognition(w, h, matrix, modules);
 #if Watch_Pre_Process_Result
             IO.write_Result_To_Text_File(string.Format("{0} {1}", args[0].Substring(s + 1, e - s - 1), ret), Config.Result_Save_Path);
@@ -175,19 +174,15 @@ namespace qunar
 
                 string inpath = "";
                 string outpath = "";
-                try
+                for (int i = 0; i < (1 << 10); i++)
                 {
-                    for (int i = 0; i < (1 << 10); i++)
-                    {
-                        inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
-                        outpath = savepath + "0(" + i.ToString() + ")." + FileType.txt.ToString();
+                    inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
+                    outpath = savepath + "0(" + i.ToString() + ")." + FileType.txt.ToString();
 
-                        if (!File.Exists(inpath)) { break; }
+                    if (!File.Exists(inpath)) { break; }
 
-                        IO.write_Bmp_To_Avg_Number(inpath, outpath);
-                    }
+                    IO.write_Bmp_To_Avg_Number(inpath, outpath);
                 }
-                catch (Exception) { }
             }
             catch (Exception e)
             {

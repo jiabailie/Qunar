@@ -57,7 +57,10 @@ namespace qunar
                     }
                 }
             }
-            catch (Exception) { }
+            catch (Exception e)
+            {
+                throw new Exception("write_Template_Into_Text_Files:" + e.Message);
+            }
         }
 
         public static List<Module> read_Templates_To_Memory(string inpath, FileType fileType)
@@ -264,7 +267,10 @@ namespace qunar
                     }
                 }
             }
-            catch (Exception) { }
+            catch (Exception ex)
+            {
+                throw new Exception("generate_Template_From_Img:" + ex.Message);
+            }
         }
 
         /// <summary>
