@@ -215,22 +215,20 @@ namespace qunar
                     throw new Exception("The file type is not image.");
                 }
 
-                try
+                for (i = 0; i < (1 << 10); i++)
                 {
-                    for (i = 0; i < (1 << 10); i++)
-                    {
-                        inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
-                        outpath = savepath + "0(" + i.ToString() + ")." + FileType.bmp.ToString();
+                    inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
+                    outpath = savepath + "0(" + i.ToString() + ")." + FileType.bmp.ToString();
 
-                        if (!File.Exists(inpath)) { break; }
+                    if (!File.Exists(inpath)) { break; }
 
-                        bitmap = Operations.ConvertJpg2Bmp(inpath);
+                    bitmap = Operations.ConvertJpg2Bmp(inpath);
 
-                        // Do uniformization operation
-                        Operations.UniformizationBmp(bitmap);
+                    // Do uniformization operation
+                    Operations.UniformizationBmp(bitmap);
 
-                        // Remove black edges
-                        Operations.generate_White_Edges(bitmap);
+                    // Remove black edges
+                    Operations.generate_White_Edges(bitmap);
 
 #if     Remove_Suspending_Points
                         // Remove suspending points
@@ -242,10 +240,8 @@ namespace qunar
                         Operations.Remove_Thin_Vertical_Lines(bitmap);
 #endif
 
-                        bitmap.Save(outpath, ImageFormat.Bmp);
-                    }
+                    bitmap.Save(outpath, ImageFormat.Bmp);
                 }
-                catch (Exception) { }
             }
             catch (Exception e)
             {
@@ -267,30 +263,26 @@ namespace qunar
                     throw new Exception("The file type is not image.");
                 }
 
-                try
+                for (i = 0; i < (1 << 10); i++)
                 {
-                    for (i = 0; i < (1 << 10); i++)
-                    {
-                        inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
-                        outpath = savepath + "0(" + i.ToString() + ")." + FileType.txt.ToString();
+                    inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
+                    outpath = savepath + "0(" + i.ToString() + ")." + FileType.txt.ToString();
 
-                        if (!File.Exists(inpath)) { break; }
+                    if (!File.Exists(inpath)) { break; }
 
-                        bitmap = Operations.ConvertJpg2Bmp(inpath);
+                    bitmap = Operations.ConvertJpg2Bmp(inpath);
 
-                        // Do uniformization operation
-                        Operations.UniformizationBmp(bitmap);
+                    // Do uniformization operation
+                    Operations.UniformizationBmp(bitmap);
 
-                        // Remove black edges
-                        Operations.generate_White_Edges(bitmap);
+                    // Remove black edges
+                    Operations.generate_White_Edges(bitmap);
 #if     Remove_Suspending_Points
                         // Remove suspending points
                         Operations.Remove_Suspending_Points(bitmap);
 #endif
-                        IO.write_Bmp_To_Avg_Number(bitmap, outpath);
-                    }
+                    IO.write_Bmp_To_Avg_Number(bitmap, outpath);
                 }
-                catch (Exception) { }
             }
             catch (Exception e)
             {
@@ -312,36 +304,32 @@ namespace qunar
                     throw new Exception("The file type is not image.");
                 }
 
-                try
+                for (i = 0; i < (1 << 10); i++)
                 {
-                    for (i = 0; i < (1 << 10); i++)
-                    {
-                        inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
-                        outpath = savepath + "0(" + i.ToString() + ")." + FileType.bmp.ToString();
+                    inpath = filepath + "0(" + i.ToString() + ")." + filetype.ToString();
+                    outpath = savepath + "0(" + i.ToString() + ")." + FileType.bmp.ToString();
 
-                        if (!File.Exists(inpath)) { break; }
+                    if (!File.Exists(inpath)) { break; }
 
-                        bitmap = Operations.ConvertJpg2Bmp(inpath);
+                    bitmap = Operations.ConvertJpg2Bmp(inpath);
 
-                        // Do uniformization operation
-                        Operations.UniformizationBmp(bitmap);
+                    // Do uniformization operation
+                    Operations.UniformizationBmp(bitmap);
 
-                        // Remove black edges
-                        Operations.generate_White_Edges(bitmap);
+                    // Remove black edges
+                    Operations.generate_White_Edges(bitmap);
 
 #if     Remove_Suspending_Points
                         // Remove suspending points
                         Operations.Remove_Suspending_Points(bitmap);
 #endif
 
-                        // Find the long black line
-                        iLine iline1 = QunarFeatureOperations.Find_Long_Connected_Lines(bitmap.Width - 1, 0, -1, bitmap);
-                        iLine iline2 = QunarFeatureOperations.Find_Long_Connected_Lines(0, bitmap.Width - 1, 1, bitmap);
+                    // Find the long black line
+                    iLine iline1 = QunarFeatureOperations.Find_Long_Connected_Lines(bitmap.Width - 1, 0, -1, bitmap);
+                    iLine iline2 = QunarFeatureOperations.Find_Long_Connected_Lines(0, bitmap.Width - 1, 1, bitmap);
 
-                        bitmap.Save(outpath, ImageFormat.Bmp);
-                    }
+                    bitmap.Save(outpath, ImageFormat.Bmp);
                 }
-                catch (Exception) { }
             }
             catch (Exception e)
             {
