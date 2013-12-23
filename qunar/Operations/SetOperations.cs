@@ -89,7 +89,7 @@ namespace qunar
                 for (ih = 0; ih < source.Height; ih++)
                 {
                     color = source.GetPixel(iw, ih);
-                    if (((color.R | color.G | color.B) == 0) ||            // black
+                    if (((color.R | color.G | color.B) == 0) ||          // black
                         ((color.R & color.G) == 255 && color.B == 0))    // yellow
                     {
                         ret[iw, ih] = 1;

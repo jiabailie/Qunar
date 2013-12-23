@@ -132,7 +132,7 @@ namespace qunar
                         Branch.write_Bmp_To_Bmp_Using_Threshold(Config.Sample_Path, Config.Binary_Path, FileType.bmp);
                         break;
                     case 3:
-                        Branch.write_Long_Black_Lines_Into_Files(Config.Sample_Path, Config.Long_Black_Line_Path, FileType.jpg);
+                        Branch.write_Long_Black_Lines_Into_Files(Config.Sample_Path, Config.Long_Black_Line_Path, FileType.bmp);
                         break;
                     case 4:
                         Template.generate_Template_From_Img(Config.Raw_template_Path, Config.Template_Path, FileType.bmp);
@@ -226,13 +226,13 @@ namespace qunar
                     Operations.generate_White_Edges(bitmap);
 
 #if     Remove_Suspending_Points
-                        // Remove suspending points
-                        Operations.Remove_Suspending_Points(bitmap);
+                    // Remove suspending points
+                    Operations.Remove_Suspending_Points(bitmap);
 #endif
 
 #if     Remove_Thin_Vertical_Line
-                        // Remove thin vertical lines
-                        Operations.Remove_Thin_Vertical_Lines(bitmap);
+                    // Remove thin vertical lines
+                    Operations.Remove_Thin_Vertical_Lines(bitmap);
 #endif
 
                     bitmap.Save(outpath, ImageFormat.Bmp);
@@ -272,9 +272,10 @@ namespace qunar
 
                     // Remove black edges
                     Operations.generate_White_Edges(bitmap);
+
 #if     Remove_Suspending_Points
-                        // Remove suspending points
-                        Operations.Remove_Suspending_Points(bitmap);
+                    // Remove suspending points
+                    Operations.Remove_Suspending_Points(bitmap);
 #endif
                     IO.write_Bmp_To_Avg_Number(bitmap, outpath);
                 }
@@ -315,8 +316,8 @@ namespace qunar
                     Operations.generate_White_Edges(bitmap);
 
 #if     Remove_Suspending_Points
-                        // Remove suspending points
-                        Operations.Remove_Suspending_Points(bitmap);
+                    // Remove suspending points
+                    Operations.Remove_Suspending_Points(bitmap);
 #endif
 
                     // Find the long black line
