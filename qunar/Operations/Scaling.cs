@@ -15,6 +15,7 @@ namespace qunar
         {
             int i = 0, j = 0;
             int m = 0, n = 0;
+            int[] rgb = null;
             Bitmap copy = new Bitmap(source);
 
             try
@@ -23,7 +24,7 @@ namespace qunar
                 {
                     for (j = 1; j < source.Height - 1; j++)
                     {
-                        int[] rgb = new int[3] { 0, 0, 0 };
+                        rgb = new int[3] { 0, 0, 0 };
                         for (m = -1; m <= 1; m++)
                         {
                             for (n = -1; n <= 1; n++)
@@ -33,6 +34,10 @@ namespace qunar
                                 rgb[1] += point.G * kernel[m + 1][n + 1];
                                 rgb[2] += point.B * kernel[m + 1][n + 1];
                             }
+                        }
+                        for (m = 0; m < 3; m++)
+                        {
+                            rgb[m] = rgb[m] < 0 ? 0 : (rgb[m] > 255 ? 255 : rgb[m]);
                         }
                         source.SetPixel(i, j, Color.FromArgb(rgb[0], rgb[1], rgb[2]));
                     }
