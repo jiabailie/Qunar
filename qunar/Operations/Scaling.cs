@@ -10,7 +10,13 @@ namespace qunar
 {
     public class Scaling
     {
-        /* {0, -1, 0, -1, 5, -1, 0, -1, 0} */
+        /// <summary>
+        /// Using some filters to do image enhancement.
+        /// {0, -1, 0, -1, 5, -1, 0, -1, 0}
+        /// </summary>
+        /// <param name="step"></param>
+        /// <param name="kernel"></param>
+        /// <param name="source"></param>
         public static void Using_Sharpening_Filters(int step, int[][] kernel, Bitmap source)
         {
             int i = 0, j = 0;
@@ -49,6 +55,12 @@ namespace qunar
             }
         }
 
+        /// <summary>
+        /// Do image zoom out operation.
+        /// </summary>
+        /// <param name="ratio"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
         public static Bitmap Image_Zoom_Out(int ratio, Bitmap source)
         {
             if (ratio == 0) { ratio = 1; }
