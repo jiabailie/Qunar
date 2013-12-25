@@ -10,14 +10,23 @@ namespace qunar
 {
     public class Scaling
     {
+        /* {0, -1, 0, -1, 5, -1, 0, -1, 0} */
+        public static void UsingSharpeningFilters(int[] kernel, Bitmap source)
+        {
+
+        }
+
         public static Bitmap ImageZoomOut(int ratio, Bitmap source)
         {
             if (ratio == 0) { ratio = 1; }
+
             int i = 0, j = 0;
             int m = 0, n = 0;
+
             int divisor = ratio * ratio;
             int nWidth = source.Width / ratio;
             int nHeight = source.Height / ratio;
+
             Bitmap zoomoutImage = new Bitmap(nWidth, nHeight);
 
             try
