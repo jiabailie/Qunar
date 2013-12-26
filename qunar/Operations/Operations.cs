@@ -271,6 +271,69 @@ namespace qunar
         }
 
         /// <summary>
+        /// Fill all 1-width white blanks with black.
+        /// </summary>
+        /// <param name="source"></param>
+        public static void Fill_One_Width_Blanks(Bitmap source)
+        {
+            int i = 0, j = 0;
+            int il = 0, ir = 0, it = 0, ib = 0;
+            Color black = Color.FromArgb(0, 0, 0);
+
+            Color center = new Color();
+
+            Color left = new Color();
+            Color right = new Color();
+            Color top = new Color();
+            Color bottom = new Color();
+
+            try
+            {
+                for (i = 0; i < source.Width; i++)
+                {
+                    for (j = 0; j < source.Height; j++)
+                    {
+                        center = source.GetPixel(i, j);
+                        if ((center.R & center.G & center.B) == 255)
+                        {
+                            if (i - 1 >= 0 && i + 1 < source.Width)
+                            {
+                                left = source.GetPixel(i - 1, j);
+                                right = source.GetPixel(i + 1, j);
+
+                                il = left.R | left.G | left.B;
+                                ir = right.R | right.G | right.B;
+
+                                if (il + ir == 0)
+                                {
+                                    source.SetPixel(i, j, black);
+                                }
+                            }
+
+                            if (j - 1 >= 0 && j + 1 < source.Height)
+                            {
+                                top = source.GetPixel(i, j - 1);
+                                bottom = source.GetPixel(i, j + 1);
+
+                                it = top.R | top.G | top.B;
+                                ib = bottom.R | bottom.G | bottom.B;
+
+                                if (it + ib == 0)
+                                {
+                                    source.SetPixel(i, j, black);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(string.Format("Operations.Fill_One_Width_Blanks:{0}", e.Message));
+            }
+        }
+
+        /// <summary>
         /// Find black vertical consecutive lines
         /// </summary>
         /// <param name="vertical"></param>

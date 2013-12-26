@@ -1,5 +1,5 @@
 ﻿#define DEBUG
-//#undef  DEBUG
+#undef  DEBUG
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,6 +31,8 @@ namespace qunar
             source.Save("E:/Projects/qunar-file/test/1_do_image_uniformization.bmp", ImageFormat.Bmp);
 
             Operations.Generate_White_Edges(source);
+
+            Operations.Fill_One_Width_Blanks(source);
 
             source.Save("E:/Projects/qunar-file/test/2_remove_edges.bmp", ImageFormat.Bmp);
 

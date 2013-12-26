@@ -56,7 +56,7 @@ namespace qunar
 
 #if Using_Non_Optimize_Branch
             // Remove black edges
-            Operations.generate_White_Edges(source);
+            Operations.Generate_White_Edges(source);
 
             // Find the long black line
             iline1 = QunarFeatureOperations.Find_Long_Connected_Lines(source.Width - 1, 0, -1, source);
@@ -64,6 +64,8 @@ namespace qunar
 
             // Transform the processed input image into 0/1 matrix.
             matrix = SetOperations.Transform_Image_To_Matrix(source);
+
+            Optimize.Fill_One_Width_Blanks(w, h, ref matrix);
 #else
 
             // Transform the processed input image into 0/1 matrix.
@@ -76,6 +78,8 @@ namespace qunar
             iline1 = Optimize.Find_Long_Connected_Lines(w - 1, 0, -1, w, h, matrix);
 
             iline2 = Optimize.Find_Long_Connected_Lines(0, w - 1, 1, w, h, matrix);
+
+            Optimize.Fill_One_Width_Blanks(w, h, ref matrix);
 
 #endif
             // Remove the redundant white regions.

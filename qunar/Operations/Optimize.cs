@@ -44,6 +44,48 @@ namespace qunar
         }
 
         /// <summary>
+        /// Fill all 1-width white blanks with black.
+        /// </summary>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
+        /// <param name="matrix"></param>
+        public static void Fill_One_Width_Blanks(int w, int h, ref byte[,] matrix)
+        {
+            int i = 0, j = 0;
+
+            try
+            {
+                for (i = 0; i < w; i++)
+                {
+                    for (j = 0; j < h; j++)
+                    {
+                        if (matrix[i, j] == 0)
+                        {
+                            if (i - 1 >= 0 && i + 1 < w)
+                            {
+                                if ((matrix[i - 1, j] & matrix[i + 1, j]) == 1)
+                                {
+                                    matrix[i, j] = 1;
+                                }
+                            }
+                            if (j - 1 >= 0 && j + 1 < h)
+                            {
+                                if ((matrix[i, j - 1] & matrix[i, j + 1]) == 1)
+                                {
+                                    matrix[i, j] = 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(string.Format("Optimize.Fill_One_Width_Blanks:{0}", e.Message));
+            }
+        }
+
+        /// <summary>
         /// Deal with 1-width line operation
         /// </summary>
         /// <param name="iline"></param>
