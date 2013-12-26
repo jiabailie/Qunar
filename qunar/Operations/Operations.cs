@@ -16,7 +16,7 @@ namespace qunar
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        public static bool judgeWhitePoint(Color color)
+        public static bool Judge_White_Point(Color color)
         {
             bool ret = true;
 
@@ -28,27 +28,10 @@ namespace qunar
         }
 
         /// <summary>
-        /// Using this method to convert .jpg source image into .bmp format.
-        /// </summary>
-        public static Bitmap ConvertJpg2Bmp(string sourcePath)
-        {
-            Bitmap source = null;
-            try
-            {
-                source = new Bitmap(sourcePath);
-            }
-            catch (Exception oe)
-            {
-                Console.WriteLine(oe.Message);
-            }
-            return source;
-        }
-
-        /// <summary>
         /// Do uniformization operation for certain image.
         /// </summary>
         /// <param name="source"></param>
-        public static void UniformizationBmp(Bitmap source)
+        public static void Uniformization_Bmp(Bitmap source)
         {
             int iw = 0, ih = 0;
             int avg = 0;
@@ -70,80 +53,47 @@ namespace qunar
         /// Remove images' black edges.
         /// </summary>
         /// <param name="source"></param>
-        public static void generate_White_Edges(Bitmap source)
+        public static void Generate_White_Edges(Bitmap source)
         {
             int i = 0;
             Color white = Color.FromArgb(255, 255, 255);
+            Color neighbour = new Color();
 
             try
             {
                 for (i = 0; i < source.Width; i++)
                 {
-                    source.SetPixel(i, 0, white);
-                    source.SetPixel(i, source.Height - 1, white);
+                    neighbour = source.GetPixel(i, 1);
+                    if ((neighbour.R & neighbour.G & neighbour.B) == 255)
+                    {
+                        source.SetPixel(i, 0, white);
+                    }
+
+                    neighbour = source.GetPixel(i, source.Height - 2);
+                    if ((neighbour.R & neighbour.G & neighbour.B) == 255)
+                    {
+                        source.SetPixel(i, source.Height - 1, white);
+                    }
                 }
                 for (i = 0; i < source.Height; i++)
                 {
-                    source.SetPixel(0, i, white);
-                    source.SetPixel(source.Width - 1, i, white);
+                    neighbour = source.GetPixel(1, i);
+                    if ((neighbour.R & neighbour.G & neighbour.B) == 255)
+                    {
+                        source.SetPixel(0, i, white);
+                    }
+
+                    neighbour = source.GetPixel(source.Width - 2, i);
+                    if ((neighbour.R & neighbour.G & neighbour.B) == 255)
+                    {
+                        source.SetPixel(source.Width - 1, i, white);
+                    }
                 }
             }
             catch (Exception e)
             {
                 throw new Exception("generate_White_Edges:" + e.Message);
             }
-        }
-
-        /// <summary>
-        /// Write one connected component to certain bmp image.
-        /// </summary>
-        /// <param name="ccImage"></param>
-        /// <param name="sourceImage"></param>
-        public static Bitmap SaveConnectedComponentAsBmp(ConnectedComponent ccImage, Bitmap sourceImage)
-        {
-            int width = ccImage.Right_Bottom.Width_Position - ccImage.Left_Top.Width_Position;
-            int height = ccImage.Right_Bottom.Height_Position - ccImage.Left_Top.Height_Position;
-
-            Bitmap ccBmp = new Bitmap(width + 1, height + 1, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
-            Graphics ccGraphics = Graphics.FromImage(ccBmp);
-
-            // Set the background color as black.
-            ccGraphics.Clear(Color.FromArgb(0, 0, 0));
-
-            ccGraphics.Dispose();
-
-            foreach (iPoint point in ccImage.PointSet)
-            {
-                ccBmp.SetPixel(point.Width_Position - ccImage.Left_Top.Width_Position,
-                               point.Height_Position - ccImage.Left_Top.Height_Position,
-                               sourceImage.GetPixel(point.Width_Position, point.Height_Position)
-                );
-            }
-
-            return ccBmp;
-        }
-
-        /// <summary>
-        /// Find all connected components and write them into files.
-        /// </summary>
-        public static List<Bitmap> FindConnectedComponents(Bitmap source)
-        {
-            List<Bitmap> imageParts = new List<Bitmap>();
-            List<ConnectedComponent> ccImage = findAllConnectedComponents(source);
-
-            try
-            {
-                foreach (ConnectedComponent cc in ccImage)
-                {
-                    imageParts.Add(SaveConnectedComponentAsBmp(cc, source));
-                }
-            }
-            catch (Exception oe)
-            {
-                Console.WriteLine(oe.Message);
-            }
-            return imageParts;
         }
 
         /// <summary>
@@ -180,7 +130,7 @@ namespace qunar
                         if (tx >= 0 && tx < source.Width &&
                             ty >= 0 && ty < source.Height &&
                             !visited[tx, ty] &&
-                            judgeWhitePoint(source.GetPixel(tx, ty)))
+                            Judge_White_Point(source.GetPixel(tx, ty)))
                         {
                             visited[tx, ty] = true;
                             pointQueue.Enqueue(new iPoint(tx, ty));
@@ -198,7 +148,7 @@ namespace qunar
         /// According to the point information to find the left-top and right-bottom point.
         /// </summary>
         /// <param name="currentCC"></param>
-        private static void FormatConnectedComponent(ConnectedComponent currentCC)
+        public static void Format_Connected_Component(ConnectedComponent currentCC)
         {
             int minWidth = int.MaxValue;
             int maxWidth = int.MinValue;
@@ -227,66 +177,6 @@ namespace qunar
 
             currentCC.Left_Top = new iPoint(minWidth, minHeight);
             currentCC.Right_Bottom = new iPoint(maxWidth, maxHeight);
-        }
-
-        /// <summary>
-        /// Find all connected-components in the image and return related information.
-        /// </summary>
-        /// <param name="source"></param>
-        /// <returns></returns>
-        public static List<ConnectedComponent> findAllConnectedComponents(Bitmap source)
-        {
-            int i = 0, j = 0;
-            int tw = 0, th = 0;
-
-            int width = source.Width;
-            int height = source.Height;
-
-            // The array which tells whether the point at position[i,j] has been visited.
-            bool[,] visited = new bool[width, height];
-
-            List<ConnectedComponent> ccResult = new List<ConnectedComponent>();
-
-            try
-            {
-                for (i = 0; i < width; i++)
-                {
-                    for (j = 0; j < height; j++)
-                    {
-                        if (judgeWhitePoint(source.GetPixel(i, j)) && !visited[i, j])
-                        {
-                            visited[i, j] = true;
-
-                            ConnectedComponent currentCC = new ConnectedComponent();
-
-                            currentCC.PointSet.Add(new iPoint(i, j));
-                            try
-                            {
-                                BFS(i, j, ref visited, currentCC, source);
-                            }
-                            catch (Exception ea)
-                            {
-                                throw new Exception(ea.Message);
-                            }
-
-                            FormatConnectedComponent(currentCC);
-
-                            tw = currentCC.Right_Bottom.Width_Position - currentCC.Left_Top.Width_Position;
-                            th = currentCC.Right_Bottom.Height_Position - currentCC.Left_Top.Height_Position;
-
-                            if (tw < width / 4 && (tw >= Config.CC_Size_Threshold || th >= Config.CC_Size_Threshold))
-                            {
-                                ccResult.Add(currentCC);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-            return ccResult;
         }
 
         /// <summary>
@@ -390,12 +280,12 @@ namespace qunar
         /// <param name="las_hs"></param>
         /// <param name="las_he"></param>
         /// <param name="source"></param>
-        public static void find_Vertical_Black_Line_Segment(int vertical, ref int hs, ref int he, int trend, int las_hs, int las_he, Bitmap source)
+        public static void Find_Vertical_Black_Line_Segment(int vertical, ref int hs, ref int he, int trend, int las_hs, int las_he, Bitmap source)
         {
             if (vertical < 0 || vertical > source.Width) { return; }
 
             int i = 0;
-            bool sfind = false;            
+            bool sfind = false;
             int tmpDiff = 0, minDiff = int.MaxValue;
             int center = las_hs + (las_he - las_hs) / 2;
             List<int> lhs = new List<int>();
@@ -481,6 +371,135 @@ namespace qunar
             {
                 throw new Exception(e.Message);
             }
+        }
+
+        /// <summary>
+        /// Using this method to convert .jpg source image into .bmp format.
+        /// </summary>
+        public static Bitmap Convert_Jpg2Bmp(string sourcePath)
+        {
+            Bitmap source = null;
+            try
+            {
+                source = new Bitmap(sourcePath);
+            }
+            catch (Exception oe)
+            {
+                Console.WriteLine(oe.Message);
+            }
+            return source;
+        }
+
+        /// <summary>
+        /// Write one connected component to certain bmp image.
+        /// </summary>
+        /// <param name="ccImage"></param>
+        /// <param name="sourceImage"></param>
+        public static Bitmap Save_Connected_Component_As_Bmp(ConnectedComponent ccImage, Bitmap sourceImage)
+        {
+            int width = ccImage.Right_Bottom.Width_Position - ccImage.Left_Top.Width_Position;
+            int height = ccImage.Right_Bottom.Height_Position - ccImage.Left_Top.Height_Position;
+
+            Bitmap ccBmp = new Bitmap(width + 1, height + 1, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+            Graphics ccGraphics = Graphics.FromImage(ccBmp);
+
+            // Set the background color as black.
+            ccGraphics.Clear(Color.FromArgb(0, 0, 0));
+
+            ccGraphics.Dispose();
+
+            foreach (iPoint point in ccImage.PointSet)
+            {
+                ccBmp.SetPixel(point.Width_Position - ccImage.Left_Top.Width_Position,
+                               point.Height_Position - ccImage.Left_Top.Height_Position,
+                               sourceImage.GetPixel(point.Width_Position, point.Height_Position)
+                );
+            }
+
+            return ccBmp;
+        }
+
+        /// <summary>
+        /// Find all connected components and write them into files.
+        /// </summary>
+        public static List<Bitmap> Find_Connected_Components(Bitmap source)
+        {
+            List<Bitmap> imageParts = new List<Bitmap>();
+            List<ConnectedComponent> ccImage = Find_All_Connected_Components(source);
+
+            try
+            {
+                foreach (ConnectedComponent cc in ccImage)
+                {
+                    imageParts.Add(Save_Connected_Component_As_Bmp(cc, source));
+                }
+            }
+            catch (Exception oe)
+            {
+                Console.WriteLine(oe.Message);
+            }
+            return imageParts;
+        }
+
+        /// <summary>
+        /// Find all connected-components in the image and return related information.
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static List<ConnectedComponent> Find_All_Connected_Components(Bitmap source)
+        {
+            int i = 0, j = 0;
+            int tw = 0, th = 0;
+
+            int width = source.Width;
+            int height = source.Height;
+
+            // The array which tells whether the point at position[i,j] has been visited.
+            bool[,] visited = new bool[width, height];
+
+            List<ConnectedComponent> ccResult = new List<ConnectedComponent>();
+
+            try
+            {
+                for (i = 0; i < width; i++)
+                {
+                    for (j = 0; j < height; j++)
+                    {
+                        if (Judge_White_Point(source.GetPixel(i, j)) && !visited[i, j])
+                        {
+                            visited[i, j] = true;
+
+                            ConnectedComponent currentCC = new ConnectedComponent();
+
+                            currentCC.PointSet.Add(new iPoint(i, j));
+                            try
+                            {
+                                BFS(i, j, ref visited, currentCC, source);
+                            }
+                            catch (Exception ea)
+                            {
+                                throw new Exception(ea.Message);
+                            }
+
+                            Format_Connected_Component(currentCC);
+
+                            tw = currentCC.Right_Bottom.Width_Position - currentCC.Left_Top.Width_Position;
+                            th = currentCC.Right_Bottom.Height_Position - currentCC.Left_Top.Height_Position;
+
+                            if (tw < width / 4 && (tw >= Config.CC_Size_Threshold || th >= Config.CC_Size_Threshold))
+                            {
+                                ccResult.Add(currentCC);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            return ccResult;
         }
     }
 }

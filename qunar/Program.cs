@@ -20,15 +20,23 @@ namespace qunar
             template[0] = new int[] { 0, -1, 0 };
             template[1] = new int[] { -1, 5, -1 };
             template[2] = new int[] { 0, -1, 0 };
-            Bitmap source = Operations.ConvertJpg2Bmp("E:/Projects/qunar-file/input/0(64).bmp");
+            Bitmap source = Operations.Convert_Jpg2Bmp("E:/Projects/qunar-file/input/0(64).bmp");
 
-            Operations.generate_White_Edges(source);
+            //Scaling.Using_Sharpening_Filters(3, template, source);
 
-            Scaling.Using_Sharpening_Filters(3, template, source);
+            //source.Save("E:/Projects/qunar-file/test/1_using_sharpening_filters.bmp", ImageFormat.Bmp);
 
-            //source = Scaling.Image_Zoom_Out(3, source);
+            Operations.Uniformization_Bmp(source);
 
-            source.Save("E:/Projects/qunar-file/test/1.bmp", ImageFormat.Bmp);
+            source.Save("E:/Projects/qunar-file/test/1_do_image_uniformization.bmp", ImageFormat.Bmp);
+
+            Operations.Generate_White_Edges(source);
+
+            source.Save("E:/Projects/qunar-file/test/2_remove_edges.bmp", ImageFormat.Bmp);
+
+            source = Scaling.Image_Zoom_Out(2, source);
+
+            source.Save("E:/Projects/qunar-file/test/3_image_zoom_out.bmp", ImageFormat.Bmp);
 #else
             if (args.Length > 0)
             {

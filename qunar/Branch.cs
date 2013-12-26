@@ -46,13 +46,13 @@ namespace qunar
             s = args[0].IndexOf('(');
             e = args[0].IndexOf(')');
 #endif
-            source = Operations.ConvertJpg2Bmp(args[0]);
+            source = Operations.Convert_Jpg2Bmp(args[0]);
 
             w = source.Width;
             h = source.Height;
 
             // Do uniformization operation
-            Operations.UniformizationBmp(source);
+            Operations.Uniformization_Bmp(source);
 
 #if Using_Non_Optimize_Branch
             // Remove black edges
@@ -70,7 +70,7 @@ namespace qunar
             matrix = SetOperations.Transform_Image_To_Matrix(source);
 
             // Remove black edges
-            Optimize.generate_White_Edges(w, h, ref matrix);
+            Optimize.Generate_White_Edges(w, h, ref matrix);
 
             // Find the long black line
             iline1 = Optimize.Find_Long_Connected_Lines(w - 1, 0, -1, w, h, matrix);
@@ -144,7 +144,7 @@ namespace qunar
                         modules = Template.read_Templates_To_Memory(Config.Processed_Template_Path, FileType.txt);
                         break;
                     case 7:
-                        correctRate = CalCorrectRate.calculate_Correct_Rate();
+                        correctRate = CalCorrectRate.Calculate_Correct_Rate();
                         Console.WriteLine(correctRate);
                         break;
                     case 9:
@@ -217,13 +217,13 @@ namespace qunar
 
                     if (!File.Exists(inpath)) { break; }
 
-                    bitmap = Operations.ConvertJpg2Bmp(inpath);
+                    bitmap = Operations.Convert_Jpg2Bmp(inpath);
 
                     // Do uniformization operation
-                    Operations.UniformizationBmp(bitmap);
+                    Operations.Uniformization_Bmp(bitmap);
 
                     // Remove black edges
-                    Operations.generate_White_Edges(bitmap);
+                    Operations.Generate_White_Edges(bitmap);
 
 #if     Remove_Suspending_Points
                     // Remove suspending points
@@ -265,13 +265,13 @@ namespace qunar
 
                     if (!File.Exists(inpath)) { break; }
 
-                    bitmap = Operations.ConvertJpg2Bmp(inpath);
+                    bitmap = Operations.Convert_Jpg2Bmp(inpath);
 
                     // Do uniformization operation
-                    Operations.UniformizationBmp(bitmap);
+                    Operations.Uniformization_Bmp(bitmap);
 
                     // Remove black edges
-                    Operations.generate_White_Edges(bitmap);
+                    Operations.Generate_White_Edges(bitmap);
 
 #if     Remove_Suspending_Points
                     // Remove suspending points
@@ -307,13 +307,13 @@ namespace qunar
 
                     if (!File.Exists(inpath)) { break; }
 
-                    bitmap = Operations.ConvertJpg2Bmp(inpath);
+                    bitmap = Operations.Convert_Jpg2Bmp(inpath);
 
                     // Do uniformization operation
-                    Operations.UniformizationBmp(bitmap);
+                    Operations.Uniformization_Bmp(bitmap);
 
                     // Remove black edges
-                    Operations.generate_White_Edges(bitmap);
+                    Operations.Generate_White_Edges(bitmap);
 
 #if     Remove_Suspending_Points
                     // Remove suspending points

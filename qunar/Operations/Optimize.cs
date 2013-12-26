@@ -16,85 +16,29 @@ namespace qunar
         /// <param name="w"></param>
         /// <param name="h"></param>
         /// <param name="matrix"></param>
-        public static void generate_White_Edges(int w, int h, ref byte[,] matrix)
+        public static void Generate_White_Edges(int w, int h, ref byte[,] matrix)
         {
             int i = 0;
             for (i = 0; i < w; i++)
             {
-                matrix[i, 0] = 0;
-                matrix[i, h - 1] = 0;
+                if (matrix[i, 1] == 0)
+                {
+                    matrix[i, 0] = 0;
+                }
+                if (matrix[i, h - 2] == 0)
+                {
+                    matrix[i, h - 1] = 0;
+                }
             }
             for (i = 0; i < h; i++)
             {
-                matrix[0, i] = 0;
-                matrix[w - 1, i] = 0;
-            }
-        }
-
-        /// <summary>
-        /// Find black vertical consecutive lines
-        /// </summary>
-        /// <param name="vertical"></param>
-        /// <param name="hs"></param>
-        /// <param name="he"></param>
-        /// <param name="trend"></param>
-        /// <param name="las_hs"></param>
-        /// <param name="las_he"></param>
-        /// <param name="w"></param>
-        /// <param name="h"></param>
-        /// <param name="matrix"></param>
-        public static void find_Vertical_Black_Line_Segment(int vertical, ref int hs, ref int he, int trend, int las_hs, int las_he, int w, int h, byte[,] matrix)
-        {
-            if (vertical < 0 || vertical >= w) { return; }
-            int i = 0;
-            bool sfind = false;
-            int tmpDiff = 0, minDiff = int.MaxValue;
-            int center = las_hs + (las_he - las_hs) / 2;
-            List<int> lhs = new List<int>();
-            List<int> lhe = new List<int>();
-
-            for (i = 0; i < h; i++)
-            {
-                if (matrix[vertical, i] == 1)
+                if (matrix[1, i] == 0)
                 {
-                    if (!sfind)
-                    {
-                        sfind = true;
-                        lhs.Add(i);
-                    }
+                    matrix[0, i] = 0;
                 }
-                else
+                if (matrix[w - 2, i] == 0)
                 {
-                    if (sfind)
-                    {
-                        sfind = false;
-                        lhe.Add(i - 1);
-                    }
-                }
-            }
-
-            if (lhs.Count == 0) { return; }
-
-            if (lhs.Count == 1)
-            {
-                hs = lhs[0];
-                he = lhe[0];
-            }
-
-            for (i = 0; i < lhs.Count; i++)
-            {
-                tmpDiff = Math.Abs(lhs[i] + lhe[i] - las_hs - las_he);
-                if (tmpDiff < minDiff)
-                {
-                    minDiff = tmpDiff;
-                    hs = lhs[i];
-                    he = lhe[i];
-
-                    if (lhe[i] - lhs[i] >= 5)
-                    {
-                        hs = las_hs;
-                        he = Math.Min(las_hs + 3, h - 1);
-                    }
+                    matrix[w - 1, i] = 0;
                 }
             }
         }
@@ -153,6 +97,74 @@ namespace qunar
         }
 
         /// <summary>
+        /// Find black vertical consecutive lines
+        /// </summary>
+        /// <param name="vertical"></param>
+        /// <param name="hs"></param>
+        /// <param name="he"></param>
+        /// <param name="trend"></param>
+        /// <param name="las_hs"></param>
+        /// <param name="las_he"></param>
+        /// <param name="w"></param>
+        /// <param name="h"></param>
+        /// <param name="matrix"></param>
+        public static void Find_Vertical_Black_Line_Segment(int vertical, ref int hs, ref int he, int trend, int las_hs, int las_he, int w, int h, byte[,] matrix)
+        {
+            if (vertical < 0 || vertical >= w) { return; }
+            int i = 0;
+            bool sfind = false;
+            int tmpDiff = 0, minDiff = int.MaxValue;
+            int center = las_hs + (las_he - las_hs) / 2;
+            List<int> lhs = new List<int>();
+            List<int> lhe = new List<int>();
+
+            for (i = 0; i < h; i++)
+            {
+                if (matrix[vertical, i] == 1)
+                {
+                    if (!sfind)
+                    {
+                        sfind = true;
+                        lhs.Add(i);
+                    }
+                }
+                else
+                {
+                    if (sfind)
+                    {
+                        sfind = false;
+                        lhe.Add(i - 1);
+                    }
+                }
+            }
+
+            if (lhs.Count == 0) { return; }
+
+            if (lhs.Count == 1)
+            {
+                hs = lhs[0];
+                he = lhe[0];
+            }
+
+            for (i = 0; i < lhs.Count; i++)
+            {
+                tmpDiff = Math.Abs(lhs[i] + lhe[i] - las_hs - las_he);
+                if (tmpDiff < minDiff)
+                {
+                    minDiff = tmpDiff;
+                    hs = lhs[i];
+                    he = lhe[i];
+
+                    if (lhe[i] - lhs[i] >= 5)
+                    {
+                        hs = las_hs;
+                        he = Math.Min(las_hs + 3, h - 1);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Find long and connected black lines.
         /// right - left : (width - 1, 0, -1, source)
         /// left - right : (0, width - 1, 1, source)
@@ -196,7 +208,7 @@ namespace qunar
 
             hs = he = -1;
 
-            find_Vertical_Black_Line_Segment(s + inc, ref hs, ref he, trend, las_hs, las_he, w, h, matrix);
+            Find_Vertical_Black_Line_Segment(s + inc, ref hs, ref he, trend, las_hs, las_he, w, h, matrix);
 
             las_hs = hs;
             las_he = he;
@@ -209,7 +221,7 @@ namespace qunar
 
             for (i = s + 2 * inc; i != end; i += inc)
             {
-                find_Vertical_Black_Line_Segment(i, ref hs, ref he, trend, las_hs, las_he, w, h, matrix);
+                Find_Vertical_Black_Line_Segment(i, ref hs, ref he, trend, las_hs, las_he, w, h, matrix);
 
                 if (hs == -1 && he == -1)
                 {

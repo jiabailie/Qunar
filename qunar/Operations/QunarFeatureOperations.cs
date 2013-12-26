@@ -85,7 +85,7 @@ namespace qunar
 
                 hs = he = -1;
 
-                Operations.find_Vertical_Black_Line_Segment(s + inc, ref hs, ref he, trend, las_hs, las_he, source);
+                Operations.Find_Vertical_Black_Line_Segment(s + inc, ref hs, ref he, trend, las_hs, las_he, source);
 
                 las_hs = hs;
                 las_he = he;
@@ -98,7 +98,7 @@ namespace qunar
 
                 for (i = s + 2 * inc; i != end; i += inc)
                 {
-                    Operations.find_Vertical_Black_Line_Segment(i, ref hs, ref he, trend, las_hs, las_he, source);
+                    Operations.Find_Vertical_Black_Line_Segment(i, ref hs, ref he, trend, las_hs, las_he, source);
 
                     if (hs == -1 && he == -1)
                     {

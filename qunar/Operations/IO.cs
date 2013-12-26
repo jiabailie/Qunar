@@ -53,7 +53,7 @@ namespace qunar
         {
             int i = 0, j = 0;
 
-            Bitmap source = Operations.ConvertJpg2Bmp(inpath);
+            Bitmap source = Operations.Convert_Jpg2Bmp(inpath);
 
             int[,] avgImg = new int[source.Height, source.Width];
 

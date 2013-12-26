@@ -16,29 +16,21 @@ namespace qunar
     /// </summary>
     public class GenerateImageParts
     {
-        public static List<Bitmap> generateImageParts(string inpath)
+        public static Bitmap Remove_Redundant_Blanks(Bitmap source)
         {
-            Bitmap source = Operations.ConvertJpg2Bmp(inpath);
-            Operations.UniformizationBmp(source);
-            List<Bitmap> imageParts = Operations.FindConnectedComponents(source);
-            return imageParts;
-        }
-
-        public static Bitmap removeRedundantBlanks(Bitmap source)
-        {         
             int iw = 0, ih = 0;
             int w = 0, h = 0;
             Color color = new Color();
-            Bitmap desti = null;            
+            Bitmap desti = null;
 
             int lt_h = int.MaxValue, lt_w = int.MaxValue;
             int rb_h = int.MinValue, rb_w = int.MinValue;
 
             // Do uniformization operation
-            Operations.UniformizationBmp(source);
+            Operations.Uniformization_Bmp(source);
 
             // Remove black edges
-            Operations.generate_White_Edges(source);
+            Operations.Generate_White_Edges(source);
 
             // Remove vertical lines which has less than Config.VERTICAL_THRESHOLD pixels.
             Operations.Remove_Thin_Vertical_Lines(source);
@@ -78,6 +70,14 @@ namespace qunar
             Console.WriteLine("Saved.\n");
 #endif
             return desti;
+        }
+
+        public static List<Bitmap> Generate_Image_Parts(string inpath)
+        {
+            Bitmap source = Operations.Convert_Jpg2Bmp(inpath);
+            Operations.Uniformization_Bmp(source);
+            List<Bitmap> imageParts = Operations.Find_Connected_Components(source);
+            return imageParts;
         }
     }
 }
