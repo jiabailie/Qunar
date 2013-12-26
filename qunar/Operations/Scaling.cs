@@ -106,5 +106,25 @@ namespace qunar
             }
             return zoomoutImage;
         }
+
+        /// <summary>
+        /// Do image zoom in operation.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static Bitmap Image_Zoom_In(int width, int height, Bitmap source)
+        {
+            try
+            {
+                Bitmap zoomin = new Bitmap(source, width, height);
+                return zoomin;
+            }
+            catch (Exception e)
+            {
+                throw new Exception(string.Format("Scaling.Image_Zoom_In:{0}", e.Message));
+            }   
+        }
     }
 }

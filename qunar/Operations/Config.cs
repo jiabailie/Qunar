@@ -92,6 +92,16 @@ namespace qunar
         private const int MAXIMUM_FAILURE_TIMES = 20;
 
         /// <summary>
+        /// The step length of image enhancement operator.
+        /// </summary>
+        private const int IMAGE_ENHANCEMENT_OPERATOR_STEP = 3;
+
+        /// <summary>
+        /// The ratio of doing image scaling.
+        /// </summary>
+        private const int IMAGE_SCALING_RATIO = 2;
+
+        /// <summary>
         /// Sample files path.
         /// </summary>
         private const string SAMPLE_PATH = "../../../../qunar-file/samples/";
@@ -209,6 +219,16 @@ namespace qunar
         public static int Maximum_Failure_Times
         {
             get { return MAXIMUM_FAILURE_TIMES; }
+        }
+
+        public static int Image_Enhancement_Operator_Step
+        {
+            get { return IMAGE_ENHANCEMENT_OPERATOR_STEP; }
+        }
+
+        public static int Image_Scaling_Ratio
+        {
+            get { return IMAGE_SCALING_RATIO; }
         }
 
         public static string Sample_Path

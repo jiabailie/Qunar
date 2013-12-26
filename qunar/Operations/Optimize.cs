@@ -153,7 +153,7 @@ namespace qunar
         public static void Find_Vertical_Black_Line_Segment(int vertical, ref int hs, ref int he, int trend, int las_hs, int las_he, int w, int h, byte[,] matrix)
         {
             if (vertical < 0 || vertical >= w) { return; }
-            int i = 0;
+            int i = 0, cur = -1;
             bool sfind = false;
             int tmpDiff = 0, minDiff = int.MaxValue;
             int center = las_hs + (las_he - las_hs) / 2;
@@ -165,9 +165,11 @@ namespace qunar
                 if (matrix[vertical, i] == 1)
                 {
                     if (!sfind)
-                    {
-                        sfind = true;
+                    {                        
+                        cur += 1;
                         lhs.Add(i);
+                        lhe.Add(i);
+                        sfind = true;
                     }
                 }
                 else
@@ -175,7 +177,7 @@ namespace qunar
                     if (sfind)
                     {
                         sfind = false;
-                        lhe.Add(i - 1);
+                        lhe[cur] = i - 1;
                     }
                 }
             }

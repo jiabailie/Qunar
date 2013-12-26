@@ -4,7 +4,6 @@
     <ProjectView>ShowAllFiles</ProjectView>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <StartArguments>
-    </StartArguments>
+    <StartArguments>../../../../qunar-file/input/0(0).jpg</StartArguments>
   </PropertyGroup>
 </Project>

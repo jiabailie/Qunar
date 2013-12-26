@@ -27,7 +27,7 @@ namespace qunar
         /// <param name="args"></param>
         public static void recognition_Branch(string[] args)
         {
-            int w = 0, h = 0, step = 3;
+            int w = 0, h = 0;
             int[] Laplacian = new int[] { 0, -1, 0, -1, 5, -1, 0, -1, 0 };
 #if Watch_Pre_Process_Result
             int s = 0, e = 0;
@@ -53,10 +53,20 @@ namespace qunar
             h = source.Height;
 
             // Do image enhancement
-            Scaling.Using_Sharpening_Filters(step, Laplacian, source);
+            Scaling.Using_Sharpening_Filters(Config.Image_Enhancement_Operator_Step, Laplacian, source);
+
+            Operations.Fill_One_Width_Blanks(source);
+
+            // Zoom out the image by certain ratio
+            source = Scaling.Image_Zoom_Out(Config.Image_Scaling_Ratio, source);
+
+            // Zoom in the image to the original size
+            source = Scaling.Image_Zoom_In(w, h, source);
 
             // Do uniformization operation
             Operations.Uniformization_Bmp(source);
+
+            source.Save("E:/Projects/qunar-file/test/2_remove_edges.bmp", ImageFormat.Bmp);
 
 #if Using_Non_Optimize_Branch
             // Remove black edges
@@ -77,6 +87,8 @@ namespace qunar
 
             // Remove black edges
             Optimize.Generate_White_Edges(w, h, ref matrix);
+
+            Optimize.Fill_One_Width_Blanks(w, h, ref matrix);
 
             // Find the long black line
             iline1 = Optimize.Find_Long_Connected_Lines(w - 1, 0, -1, w, h, matrix);

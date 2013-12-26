@@ -347,7 +347,7 @@ namespace qunar
         {
             if (vertical < 0 || vertical > source.Width) { return; }
 
-            int i = 0;
+            int i = 0, cur = -1;
             bool sfind = false;
             int tmpDiff = 0, minDiff = int.MaxValue;
             int center = las_hs + (las_he - las_hs) / 2;
@@ -363,8 +363,10 @@ namespace qunar
                     {
                         if (!sfind)
                         {
-                            sfind = true;
+                            cur += 1;
                             lhs.Add(i);
+                            lhe.Add(i);
+                            sfind = true;
                         }
                     }
                     else
@@ -372,7 +374,7 @@ namespace qunar
                         if (sfind)
                         {
                             sfind = false;
-                            lhe.Add(i - 1);
+                            lhe[cur] = i - 1;
                         }
                     }
                 }
