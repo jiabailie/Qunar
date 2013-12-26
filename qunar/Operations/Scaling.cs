@@ -17,7 +17,7 @@ namespace qunar
         /// <param name="step"></param>
         /// <param name="kernel"></param>
         /// <param name="source"></param>
-        public static void Using_Sharpening_Filters(int step, int[][] kernel, Bitmap source)
+        public static void Using_Sharpening_Filters(int step, int[] kernel, Bitmap source)
         {
             int i = 0, j = 0;
             int m = 0, n = 0;
@@ -36,9 +36,9 @@ namespace qunar
                             for (n = -1; n <= 1; n++)
                             {
                                 Color point = copy.GetPixel(i + m, j + n);
-                                rgb[0] += point.R * kernel[m + 1][n + 1];
-                                rgb[1] += point.G * kernel[m + 1][n + 1];
-                                rgb[2] += point.B * kernel[m + 1][n + 1];
+                                rgb[0] += point.R * kernel[(m + 1) * step + (n + 1)];
+                                rgb[1] += point.G * kernel[(m + 1) * step + (n + 1)];
+                                rgb[2] += point.B * kernel[(m + 1) * step + (n + 1)];
                             }
                         }
                         for (m = 0; m < 3; m++)

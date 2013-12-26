@@ -27,7 +27,8 @@ namespace qunar
         /// <param name="args"></param>
         public static void recognition_Branch(string[] args)
         {
-            int w = 0, h = 0;
+            int w = 0, h = 0, step = 3;
+            int[] Laplacian = new int[] { 0, -1, 0, -1, 5, -1, 0, -1, 0 };
 #if Watch_Pre_Process_Result
             int s = 0, e = 0;
 #endif
@@ -50,6 +51,9 @@ namespace qunar
 
             w = source.Width;
             h = source.Height;
+
+            // Do image enhancement
+            Scaling.Using_Sharpening_Filters(step, Laplacian, source);
 
             // Do uniformization operation
             Operations.Uniformization_Bmp(source);
