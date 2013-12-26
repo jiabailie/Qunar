@@ -66,8 +66,6 @@ namespace qunar
             // Do uniformization operation
             Operations.Uniformization_Bmp(source);
 
-            source.Save("E:/Projects/qunar-file/test/2_remove_edges.bmp", ImageFormat.Bmp);
-
 #if Using_Non_Optimize_Branch
             // Remove black edges
             Operations.Generate_White_Edges(source);
