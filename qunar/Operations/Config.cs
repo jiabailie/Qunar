@@ -71,7 +71,7 @@ namespace qunar
         /// When drawing a green point
         /// The neighbour should satisfy the minimus amount.
         /// </summary>
-        private const int DRAW_NEIGHBOUR_BLACK_CONDITION = 2;
+        private const int DRAW_NEIGHBOUR_BLACK_CONDITION = 2; // 6
 
         /// <summary>
         /// When drawing a red point
