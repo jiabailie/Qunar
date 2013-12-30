@@ -1,0 +1,5 @@
+E:\Projects\Qunar\qunar\bin\Debug\qunar.exe
+E:\Projects\Qunar\qunar\bin\Debug\qunar.pdb
+E:\Projects\Qunar\qunar\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Projects\Qunar\qunar\obj\x86\Debug\qunar.exe
+E:\Projects\Qunar\qunar\obj\x86\Debug\qunar.pdb

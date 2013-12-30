@@ -217,6 +217,7 @@ namespace qunar
         public static void write_Bmp_To_Bmp_Using_Threshold(string filepath, string savepath, FileType filetype)
         {
             int i = 0;
+            int w = 0, h = 0;
             string inpath = "";
             string outpath = "";
             Bitmap bitmap = null;
@@ -236,6 +237,15 @@ namespace qunar
                     if (!File.Exists(inpath)) { break; }
 
                     bitmap = Operations.Convert_Jpg2Bmp(inpath);
+
+                    w = bitmap.Width;
+                    h = bitmap.Height;
+
+                    // Zoom out the image by certain ratio
+                    bitmap = Scaling.Image_Zoom_Out(Config.Image_Scaling_Ratio, bitmap);
+
+                    // Zoom in the image to the original size
+                    bitmap = Scaling.Image_Zoom_In(w, h, bitmap);
 
                     // Do uniformization operation
                     Operations.Uniformization_Bmp(bitmap);

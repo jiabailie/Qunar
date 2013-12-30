@@ -127,6 +127,7 @@ namespace qunar
         public static int Calculate_Single_Score_Block_Template(int startWidth, int startHeight, T[,] matrix, Module module)
         {
             int score = 0;
+            int black = 0;
             int i = 0, j = 0;
 
             try
@@ -135,11 +136,25 @@ namespace qunar
                 {
                     for (j = 0; j < module.height; j++)
                     {
-                        if (module.matrix[i, j] == 1 && matrix[startWidth + i, startHeight + j].ToString() == "1")
+                        if (matrix[startWidth + i, startHeight + j].ToString().Equals("1"))
+                        {
+                            black++;
+                        }
+                    }
+                }
+                if (black < Config.Green_Point_Amount)
+                {
+                    return score;
+                }
+                for (i = 0; i < module.width; i++)
+                {
+                    for (j = 0; j < module.height; j++)
+                    {
+                        if (module.matrix[i, j] == 1 && matrix[startWidth + i, startHeight + j].ToString().Equals("1"))
                         {
                             score += Config.Green_Score;
                         }
-                        else if (module.matrix[i, j] == 2 && matrix[startWidth + i, startHeight + j].ToString() == "0")
+                        else if (module.matrix[i, j] == 2 && matrix[startWidth + i, startHeight + j].ToString().Equals("1"))
                         {
                             score += Config.Red_Score;
                         }
